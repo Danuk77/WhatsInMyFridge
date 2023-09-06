@@ -11,11 +11,13 @@ import {
 // Import the custom components
 import { foodItem } from './Assets/Functional components/foodItem';
 import { bottomBar } from './Assets/Functional components/bottomBar';
+import { topBar } from './Assets/Functional components/topBar';
 
 function App(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      {topBar()}
       {foodItem()}
       {bottomBar()}
     </SafeAreaView>
