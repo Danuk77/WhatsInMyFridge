@@ -4,9 +4,8 @@ import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
-
+  ScrollView
 } from 'react-native';
 
 // Import the custom components
@@ -16,9 +15,20 @@ function Kitchen(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.foodItemTest}>
-        <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
-      </View>
+      <ScrollView style={{width:'100%'}}>
+        <View style= {{alignItems:'center'}}>
+          <FoodItem name="Apple" type="Fruit" expirationDate={new Date("2023-09-28")}/>
+          <FoodItem name="Chicken" type="Meat" expirationDate={new Date("2023-09-21")}/>
+          <FoodItem name="Carrots" type="Vegetable" expirationDate={new Date("2023-09-17")}/>
+          <FoodItem name="Leeks" type="Vegetable" expirationDate={new Date("2023-10-20")}/>
+          <FoodItem name="Bananas" type="Fruit" expirationDate={new Date("2023-10-01")}/>
+          <FoodItem name="Oranges" type="Fruit" expirationDate={new Date("2023-10-02")}/>
+          <FoodItem name="Beef" type="Meat" expirationDate={new Date("2023-09-26")}/>
+          <FoodItem name="Pork" type="Meat" expirationDate={new Date("2023-09-25")}/>
+          <FoodItem name="Grapes" type="Fruit" expirationDate={new Date("2023-09-22")}/>
+          <FoodItem name="Onions" type="Vegetable" expirationDate={new Date("2023-09-21")}/>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -26,14 +36,10 @@ function Kitchen(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    alignItems:'center',
-    justifyContent: 'center',
     width: '100%',
-    backgroundColor:'black'
+    backgroundColor:'black',
+    alignItems:'center'
   },
-  foodItemTest: {
-    width:'80%'
-  }
 })
 
 export default Kitchen;

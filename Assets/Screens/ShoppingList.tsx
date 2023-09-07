@@ -17,9 +17,7 @@ function ShoopingList(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.foodItemTest}>
-        <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
-      </View>
+      <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
     </SafeAreaView>
   );
 }
@@ -31,9 +29,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     backgroundColor:'black'
-  },
-  foodItemTest: {
-    width:'80%'
   }
 })
 

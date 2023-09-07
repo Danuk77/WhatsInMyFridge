@@ -104,7 +104,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
               flex:1,
               justifyContent:'center'
             }}>
-              <ProgressBar startDate={60} expiryDate={7}/>
+              <ProgressBar startDate={Math.floor(Math.random() * 101)} expiryDate={7}/>
             </View>
 
         </View>
@@ -120,10 +120,11 @@ const styles = StyleSheet.create({
     flex:1
   },
   foodItem: {
-    width:'100%',
+    width:'80%',
     flexDirection: 'row',
     backgroundColor:'#2E81FF',
     borderRadius: 20,
+    marginTop: 20
   },
   foodImage: {
     width:80,

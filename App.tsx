@@ -40,17 +40,4 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    alignItems:'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor:'black'
-  },
-  foodItemTest: {
-    width:'80%'
-  }
-})
-
 export default App;
