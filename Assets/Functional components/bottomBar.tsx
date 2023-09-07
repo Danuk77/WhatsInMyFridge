@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import colors from "../../config/colors"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'

@@ -5,29 +5,45 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  View,
 
 } from 'react-native';
 
+
+// Navigation imports
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 // Import the custom components
-import { foodItem } from './Assets/Functional components/foodItem';
+import { FoodItem } from './Assets/Functional components/FoodItem';
 import { bottomBar } from './Assets/Functional components/bottomBar';
+import { Tabs } from './Assets/Screens/Tabs';
 
 function App(): JSX.Element {
 
   return (
-    <SafeAreaView style={styles.container}>
-      {foodItem()}
-      {bottomBar()}
-    </SafeAreaView>
+    <NavigationContainer>
+      <Tabs/>
+    </NavigationContainer>
+    // <SafeAreaView style={styles.container}>
+    //   <View style={styles.foodItemTest}>
+    //     <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
+    //   </View>
+    //   {/* {bottomBar()} */}
+    // </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    alignSelf:'center',
+    alignItems:'center',
     justifyContent: 'center',
-    width:"100%"
+    width: '100%',
+    backgroundColor:'black'
+  },
+  foodItemTest: {
+    width:'80%'
   }
 })
 
