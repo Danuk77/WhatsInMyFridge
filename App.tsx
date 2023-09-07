@@ -22,16 +22,16 @@ import { topBar } from './Assets/Functional components/topBar';
 
 function App(): JSX.Element {
 
+  const stack = createNativeStackNavigator();
+
   return (
     <NavigationContainer>
-      <Tabs/>
+      <stack.Navigator
+        initialRouteName='Main'
+        screenOptions={{headerShown: false}}>
+        <stack.Screen name="Main" component={Tabs}/>
+      </stack.Navigator>
     </NavigationContainer>
-    // <SafeAreaView style={styles.container}>
-    //   <View style={styles.foodItemTest}>
-    //     <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
-    //   </View>
-    //   {/* {bottomBar()} */}
-    // </SafeAreaView>
     // <SafeAreaView style={styles.container}>
     //   {topBar()}
     //   {foodItem()}
