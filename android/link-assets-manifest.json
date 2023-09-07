@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "Assets/Fonts/LilitaOne-Regular.ttf",
+      "sha1": "3a4f50ed3543a0d3291ef171aeee5408072559bd"
+    },
+    {
+      "path": "Assets/Fonts/OFL.txt",
+      "sha1": "4ea7d97bf3c235e23a7935ed9721192cf5a454d7"
+    }
+  ]
+}

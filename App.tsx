@@ -18,6 +18,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FoodItem } from './Assets/Functional components/FoodItem';
 import { bottomBar } from './Assets/Functional components/bottomBar';
 import { Tabs } from './Assets/Screens/Tabs';
+import { topBar } from './Assets/Functional components/topBar';
 
 function App(): JSX.Element {
 
@@ -30,6 +31,11 @@ function App(): JSX.Element {
     //     <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
     //   </View>
     //   {/* {bottomBar()} */}
+    // </SafeAreaView>
+    // <SafeAreaView style={styles.container}>
+    //   {topBar()}
+    //   {foodItem()}
+    //   {bottomBar()}
     // </SafeAreaView>
   );
 }
