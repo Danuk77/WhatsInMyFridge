@@ -1,10 +1,11 @@
 /* eslint-disable */
 
-export const testing = () => {
+// Action used for handling changes between fridge, freezer and shelf
+export const changeKitchenMode = (newMode:String) => {
     return{
-        type: 'test',
+        type: 'kitchenModeChange',
         payload: {
-            test: 'testing'
+            newMode: newMode
         }
     }
 }

@@ -17,7 +17,7 @@ function ShoopingList(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
+      <Text>Shopping list</Text>
     </SafeAreaView>
   );
 }

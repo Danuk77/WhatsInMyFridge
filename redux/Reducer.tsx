@@ -1,11 +1,15 @@
 /* eslint-disable */
 
-export default function reducer(state={}, action:any){
+const initialState = {
+    kitchenMode: 'Fridge'
+}
+
+export default function reducer(state=initialState, action:any){
     switch(action.type){
-        case 'test':
+        case 'kitchenModeChange':
             return{
                 ...state,
-                newState: action.payload.test
+                kitchenMode: action.payload.newMode
             }
         default:
             return state
