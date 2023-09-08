@@ -8,6 +8,7 @@ import Settings from './Settings';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUtensils, faShoppingCart, faCog} from "@fortawesome/free-solid-svg-icons"
 
+import Header from './Header';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,9 @@ export function Tabs() {
             tabBarStyle: {
                 backgroundColor: '#2E4FFF'
             },
-            headerShown:false
+            header: ({navigation, route, options}) => {
+                return <Header/>
+            },
         }}>
         <Tab.Screen name="Kitchen" 
             component={Kitchen} 

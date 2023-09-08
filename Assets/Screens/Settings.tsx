@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     width: '100%',
-    backgroundColor:'black'
   }
 })
 

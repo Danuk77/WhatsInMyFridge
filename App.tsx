@@ -34,10 +34,18 @@ function App(): JSX.Element {
     </NavigationContainer>
     // <SafeAreaView style={styles.container}>
     //   {topBar()}
-    //   {foodItem()}
     //   {bottomBar()}
     // </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    alignItems:'center',
+    justifyContent: 'center',
+    width: '100%',
+  }
+})
 
 export default App;

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
 
@@ -76,7 +76,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
               {/* Edit button click */}
               <TouchableOpacity
                 onPress={handleEdit}>
-                <FontAwesomeIcon icon={faPen} size={20} style={{color:colors.white}} />
+                <FontAwesomeIcon icon={faEllipsisVertical} size={20} style={{color:colors.white, marginRight: '5%', marginTop:5}} />
               </TouchableOpacity>
 
               
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor:'#2E81FF',
     borderRadius: 20,
-    marginTop: 20
+    marginTop: 10
   },
   foodImage: {
     width:80,
