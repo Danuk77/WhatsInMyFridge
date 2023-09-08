@@ -11,7 +11,7 @@ import {
 
 
 // Import the custom components
-import { FoodItem } from '../Functional components/foodItem';
+import { FoodItem } from '../Functional components/FoodItem';
 
 function Settings(): JSX.Element {
 

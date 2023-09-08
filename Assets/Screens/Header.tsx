@@ -22,7 +22,7 @@ function Header(): JSX.Element {
 // TODO Change which header to see depending on which tab we are on
 // TODO Change which header to see depending on which tab we are on
 // TODO Change the below state to redux
-    const [mode, setMode] = useState<number>(2);
+    const [mode, setMode] = useState<number>(0);
 
     const modeChange = (newMode:number):void => {
         setMode(newMode);
@@ -50,21 +50,21 @@ function Header(): JSX.Element {
                         marginBottom: 15,
                         marginTop: 10
                     }}>
-            <View style={mode === 0 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={mode === 0 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
                     onPress={() => modeChange(0)}>
                     <FontAwesomeIcon icon={faToiletPortable} size={35} style={{color:colors.fridgy_red}}/>
                 </TouchableOpacity>
             </View>
 
-            <View style={mode === 1 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={mode === 1 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
                     onPress={() => modeChange(1)}>
                     <FontAwesomeIcon icon={faSnowflake} size={35} style={{color:colors.freezer_blue}}/>
                 </TouchableOpacity>
             </View>
 
-            <View style={mode === 2 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={mode === 2 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
                     onPress={() => modeChange(2)}>
                     <FontAwesomeIcon icon={faBreadSlice} size={35} style={{color:colors.toasty_brown}}/>
