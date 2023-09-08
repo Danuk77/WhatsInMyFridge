@@ -15,7 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Import the custom components
-import { FoodItem } from './Assets/Functional components/FoodItem';
+import { FoodItem } from './Assets/Functional components/foodItem';
 import { bottomBar } from './Assets/Functional components/bottomBar';
 import { Tabs } from './Assets/Screens/Tabs';
 import { topBar } from './Assets/Functional components/topBar';
