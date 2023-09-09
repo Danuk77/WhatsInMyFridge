@@ -2,21 +2,18 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  Text,
-  View,
-
 } from 'react-native';
 
+// React redux for global state management
+import { Provider } from 'react-redux';
+import store from './redux/Store';
 
 // Navigation imports
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Import the custom components
-import { FoodItem } from './Assets/Functional components/foodItem';
-import { bottomBar } from './Assets/Functional components/bottomBar';
 import { Tabs } from './Assets/Screens/Tabs';
 import { topBar } from './Assets/Functional components/topBar';
 import { AddItem } from './Assets/Screens/AddItem';
@@ -27,18 +24,17 @@ function App(): JSX.Element {
   const stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
-    <NavigationContainer>
-      <stack.Navigator
-        initialRouteName='Main'
-        screenOptions={{headerShown: false}}>
-        <stack.Screen name="Main" component={Tabs}/>
-        <stack.Screen name="AddItem" component={AddItem} />
-      </stack.Navigator>
-    </NavigationContainer>
-    // <SafeAreaView style={styles.container}>
-    //   {topBar()}
-    //   {bottomBar()}
-    // </SafeAreaView>
+    <Provider store={store}>
+      <NavigationContainer>
+        <stack.Navigator
+          initialRouteName='Main'
+          screenOptions={{headerShown: false}}>
+          <stack.Screen name="Main" component={Tabs}/>
+                  <stack.Screen name="AddItem" component={AddItem} />
+
+        </stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

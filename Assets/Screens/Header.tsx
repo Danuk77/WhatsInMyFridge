@@ -10,6 +10,10 @@ import {
 
 import colors from '../../config/colors';
 
+// Import redux hooks
+import { useSelector, useDispatch } from 'react-redux';
+import { changeKitchenMode } from '../../redux/Actions';
+
 
 // Font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -30,11 +34,7 @@ function Header(): JSX.Element {
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-    const [mode, setMode] = useState<number>(2);
-
-    const modeChange = (newMode:number):void => {
-        setMode(newMode);
-    }
+    const dispatch = useDispatch();
 
     return (
     <View style={styles.completeBar}>
@@ -58,23 +58,23 @@ function Header(): JSX.Element {
                         marginBottom: 15,
                         marginTop: 10
                     }}>
-            <View style={mode === 0 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={useSelector((state:any) => state.kitchenMode) === 'Fridge' ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
-                    onPress={() => modeChange(0)}>
+                    onPress={() => dispatch(changeKitchenMode('Fridge'))}>
                     <FontAwesomeIcon icon={faToiletPortable} size={35} style={{color:colors.fridgy_red}}/>
                 </TouchableOpacity>
             </View>
 
-            <View style={mode === 1 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={useSelector((state:any) => state.kitchenMode) === 'Freezer' ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
-                    onPress={() => modeChange(1)}>
+                    onPress={() => dispatch(changeKitchenMode('Freezer'))}>
                     <FontAwesomeIcon icon={faSnowflake} size={35} style={{color:colors.freezer_blue}}/>
                 </TouchableOpacity>
             </View>
 
-            <View style={mode === 2 ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10}}>
+            <View style={useSelector((state:any) => state.kitchenMode) === 'Shelf' ? {backgroundColor:'#FFFFFF', paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5, borderRadius:10} : {paddingTop:5, paddingBottom:5, paddingLeft:5, paddingRight:5}}>
                 <TouchableOpacity
-                    onPress={() => modeChange(2)}>
+                    onPress={() => dispatch(changeKitchenMode('Shelf'))}>
                     <FontAwesomeIcon icon={faBreadSlice} size={35} style={{color:colors.toasty_brown}}/>
                 </TouchableOpacity>
             </View>

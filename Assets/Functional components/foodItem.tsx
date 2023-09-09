@@ -21,27 +21,31 @@ type foodItemProps = {
   name: String;
   type: String;
   expirationDate:Date;
+  location: String;
 }
 
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
 
-  // TOTO
+  // TODO
   // Function for handling what to do when the user clicks on the edit button
   const handleEdit = useCallback(() => {
     console.log("Editing");
   }, []);
 
+  // Load the images to show as the food item type
+  const foodImages = new Map<String, any>([
+    ["Fruit", require("../imageAssets/Fruits.png")],
+    ["Vegetable", require("../imageAssets/Vegetables.png")],
+    ["Meat", require("../imageAssets/Meats.png")]
+  ]);
 
-  // TODO write the comment for this
-  var iconToRender;
-  if(props.type === "Fruit"){
-    iconToRender = require("../imageAssets/Fruits.png");
-  }else if(props.type === "Vegetable"){
-    iconToRender = require("../imageAssets/Vegetables.png");
-  }else{
-    iconToRender = require("../imageAssets/Meats.png");
-  }
+  // Load the images to show as the food item type
+  // const itemBackground = new Map<String, String>([
+  //   ["Fridge", "#2E81FF"],
+  //   ["Freezer", "#7EB2FF"],
+  //   ["Shelf", "#FDA656"]
+  // ]);
 
   // Expiration date of the food item
   const exp : Date = new Date();
@@ -49,12 +53,16 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
 
 
   return (
-    <View style={styles.foodItem}>
+    <View style={[styles.foodItem, 
+              props.location === "Fridge" ? {backgroundColor:'#FF5084'} : 
+              props.location === "Freezer" ? {backgroundColor: '#2E81FF'} :
+              {backgroundColor : "#FDA656"}
+            ]}>
       {/* Logo of the type of food */}
         <View style={styles.itemImage}>
             <Image 
               style={styles.foodImage}
-              source={iconToRender}
+              source={foodImages.get(props.type)}
             />
         </View>
 
@@ -122,7 +130,6 @@ const styles = StyleSheet.create({
   foodItem: {
     width:'80%',
     flexDirection: 'row',
-    backgroundColor:'#2E81FF',
     borderRadius: 20,
     marginTop: 10
   },

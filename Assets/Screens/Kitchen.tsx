@@ -8,27 +8,26 @@ import {
   ScrollView
 } from 'react-native';
 
-// Import the custom components
-import { FoodItem } from '../Functional components/foodItem';
+// Import the fridge, freezer and the shelf
+import Fridge from './Fridge';
+import Freezer from './Freezer';
+import Shelf from './Shelf';
+
+// Import redux hooks
+import { useSelector } from 'react-redux';
 
 function Kitchen(): JSX.Element {
 
+  const mode = useSelector((state:any) => state.kitchenMode);
+  const foodImages = new Map<String, any>([
+      ['Fridge', <Fridge/>],
+      ['Freezer', <Freezer/>],
+      ['Shelf', <Shelf/>]
+  ]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{width:'100%'}}>
-        <View style= {{alignItems:'center'}}>
-          <FoodItem name="Apple" type="Fruit" expirationDate={new Date("2023-09-28")}/>
-          <FoodItem name="Chicken" type="Meat" expirationDate={new Date("2023-09-21")}/>
-          <FoodItem name="Carrots" type="Vegetable" expirationDate={new Date("2023-09-17")}/>
-          <FoodItem name="Leeks" type="Vegetable" expirationDate={new Date("2023-10-20")}/>
-          <FoodItem name="Bananas" type="Fruit" expirationDate={new Date("2023-10-01")}/>
-          <FoodItem name="Oranges" type="Fruit" expirationDate={new Date("2023-10-02")}/>
-          <FoodItem name="Beef" type="Meat" expirationDate={new Date("2023-09-26")}/>
-          <FoodItem name="Pork" type="Meat" expirationDate={new Date("2023-09-25")}/>
-          <FoodItem name="Grapes" type="Fruit" expirationDate={new Date("2023-09-22")}/>
-          <FoodItem name="Onions" type="Vegetable" expirationDate={new Date("2023-09-21")}/>
-        </View>
-      </ScrollView>
+      {foodImages.get(mode)}
     </SafeAreaView>
   );
 }

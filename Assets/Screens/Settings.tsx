@@ -11,13 +11,13 @@ import {
 
 
 // Import the custom components
-import { FoodItem } from '../Functional components/foodItem';
+import { FoodItem } from '../Functional components/FoodItem';
 
 function Settings(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FoodItem name="Apple" type="Meat" expirationDate={new Date("2023-09-20")}/>
+      <Text>Settings</Text>
     </SafeAreaView>
   );
 }
