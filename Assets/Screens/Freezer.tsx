@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import { foodItem } from '../../config/type';
+
 import React from 'react';
 import {
   StyleSheet,
@@ -10,15 +12,16 @@ import {
 // Import the custom components
 import { FoodItem } from '../Functional components/FoodItem';
 
-function Freezer(): JSX.Element {
+function Freezer(props:{items:foodItem[]}): JSX.Element {
 
   return (
       <ScrollView style={{width:'100%'}}>
         <View style= {{alignItems:'center'}}>
-          <FoodItem location="Freezer" name="Apple" type="Fruit" expirationDate={new Date("2023-09-28")}/>
-          <FoodItem location="Freezer" name="Chicken" type="Meat" expirationDate={new Date("2023-09-21")}/>
-          <FoodItem location="Freezer" name="Carrots" type="Vegetable" expirationDate={new Date("2023-09-17")}/>
-          <FoodItem location="Freezer" name="Leeks" type="Vegetable" expirationDate={new Date("2023-10-20")}/>
+
+          {props.items.map((item:foodItem, index:number) => (
+            <FoodItem key={`Freezer(${index})`} location="Freezer" name={item.name} type={item.type} expirationDate={new Date("2023-09-28")}/>
+          ))}
+
         </View>
       </ScrollView>
   );

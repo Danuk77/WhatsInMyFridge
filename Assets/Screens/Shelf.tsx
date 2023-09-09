@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import { foodItem } from '../../config/type';
+
 import React from 'react';
 import {
   SafeAreaView,
@@ -11,17 +13,16 @@ import {
 // Import the custom components
 import { FoodItem } from '../Functional components/FoodItem';
 
-function Shelf(): JSX.Element {
+function Shelf(props:{items:foodItem[]}): JSX.Element {
 
   return (
       <ScrollView style={{width:'100%'}}>
         <View style= {{alignItems:'center'}}>
-          <FoodItem location="Shelf" name="Apple" type="Fruit" expirationDate={new Date("2023-09-28")}/>
-          <FoodItem location="Shelf" name="Chicken" type="Meat" expirationDate={new Date("2023-09-21")}/>
-          <FoodItem location="Shelf" name="Carrots" type="Vegetable" expirationDate={new Date("2023-09-17")}/>
-          <FoodItem location="Shelf" name="Leeks" type="Vegetable" expirationDate={new Date("2023-10-20")}/>
-          <FoodItem location="Shelf" name="Bananas" type="Fruit" expirationDate={new Date("2023-10-01")}/>
-          <FoodItem location="Shelf" name="Oranges" type="Fruit" expirationDate={new Date("2023-10-02")}/>
+          
+          {props.items.map((item:foodItem, index:number) => (
+            <FoodItem key={`Freezer(${index})`} location="Freezer" name={item.name} type={item.type} expirationDate={new Date("2023-09-28")}/>
+          ))}
+
         </View>
       </ScrollView>
   );
