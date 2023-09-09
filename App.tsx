@@ -19,10 +19,12 @@ import { FoodItem } from './Assets/Functional components/foodItem';
 import { bottomBar } from './Assets/Functional components/bottomBar';
 import { Tabs } from './Assets/Screens/Tabs';
 import { topBar } from './Assets/Functional components/topBar';
+import { AddItem } from './Assets/Screens/AddItem';
+import { RootStackParamList } from './types';
 
 function App(): JSX.Element {
 
-  const stack = createNativeStackNavigator();
+  const stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>
@@ -30,6 +32,7 @@ function App(): JSX.Element {
         initialRouteName='Main'
         screenOptions={{headerShown: false}}>
         <stack.Screen name="Main" component={Tabs}/>
+        <stack.Screen name="AddItem" component={AddItem} />
       </stack.Navigator>
     </NavigationContainer>
     // <SafeAreaView style={styles.container}>

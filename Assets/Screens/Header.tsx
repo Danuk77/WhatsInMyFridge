@@ -14,6 +14,11 @@ import colors from '../../config/colors';
 // Font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faList, faPlus, faToiletPortable, faSnowflake, faBreadSlice } from "@fortawesome/free-solid-svg-icons"
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+
 
 function Header(): JSX.Element {
 // TODO Change which header to see depending on which tab we are on
@@ -22,6 +27,9 @@ function Header(): JSX.Element {
 // TODO Change which header to see depending on which tab we are on
 // TODO Change which header to see depending on which tab we are on
 // TODO Change the below state to redux
+
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
     const [mode, setMode] = useState<number>(2);
 
     const modeChange = (newMode:number):void => {
@@ -38,8 +46,8 @@ function Header(): JSX.Element {
                 </TouchableOpacity>
             </View>
             <View style={styles.iconContainer}>
-                <TouchableOpacity>
-                    <FontAwesomeIcon icon={faPlus} size={30} style={styles.icon} />
+                <TouchableOpacity onPress={() => navigation.navigate('AddItem')}>
+                    <FontAwesomeIcon icon={faPlus} size={30} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
         </View>
