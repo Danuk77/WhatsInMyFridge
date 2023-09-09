@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 // Import the custom components
-import { FoodItem } from '../Functional components/foodItem';
+import { FoodItem } from '../Functional components/FoodItem';
 
 function Fridge(): JSX.Element {
 

@@ -15,7 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Import the custom components
 import { Tabs } from './Assets/Screens/Tabs';
-import { topBar } from './Assets/Functional components/topBar';
+import { TopBar } from './Assets/Functional components/TopBar';
 import { AddItem } from './Assets/Screens/AddItem';
 import { RootStackParamList } from './types';
 

@@ -64,7 +64,7 @@ type FormData = {
 
 const MAX_QUANTITY = 100;
 
-const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
+const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: '2-digit', month: '2-digit', day: '2-digit'};
 
 
 export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
