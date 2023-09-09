@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     ProgressBarAndroidComponent,
     TextInput,
+    Modal,
 
 } from 'react-native';
 
@@ -21,6 +22,14 @@ import fonts from '../../config/fonts';
 import {useForm} from "react-hook-form"
 import DatePicker from 'react-native-date-picker'
 import DropDownPicker from 'react-native-dropdown-picker';
+// import moment from "moment";
+import {DateTime} from "luxon";
+import { getUserLocale } from 'get-user-locale';
+import { parse } from 'date-fns';
+import moment from "moment";
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { CalendarModal } from './CalendarModal';
+
 // import  from 'react-moment';
 
 // type foodItemProps = {
@@ -66,6 +75,8 @@ const MAX_QUANTITY = 100;
 
 const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: '2-digit', month: '2-digit', day: '2-digit'};
 
+const userLocale = getUserLocale();
+
 
 export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
 
@@ -88,7 +99,9 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
     const [expirationDate, setExpirationDate] = useState<Date>(new Date())
     function handleExpirationDateChange(date: Date) : void {
         setExpirationDate(date);
-        setExpirationDateString(date.toLocaleDateString(undefined, DATE_OPTIONS));
+        const m = moment(expirationDate);
+        m.locale(userLocale);
+        setExpirationDateString(m.format("L"));
     }
     const [expirationDatePickerOpen, setExpirationDatePickerOpen] = useState<boolean>(false);
 
@@ -157,18 +170,14 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
                             onChangeText={(value) => {setExpirationDateString(value)}}
                             placeholder={"e.g. " + new Date(Date.now()).toLocaleDateString(undefined, DATE_OPTIONS)}
                             onBlur={() => {
-                                var dateInt;
-                                console.log("here");
-                                try{
-                                    console.log(expirationDateString);
-                                    dateInt = 0;
-                                    console.log((new Date(dateInt)).toLocaleDateString(undefined, DATE_OPTIONS));
-                                } catch (error) {
+                                // const dt = Intl.DateTimeFormat(undefined, DATE_OPTIONS).formatToParts(expirationDateString)
+                                const m = moment(expirationDateString, "L", userLocale);
+                                if (!m.isValid()) {
                                     return;
                                 }
-                                const newDate = new Date(dateInt);
-                                setExpirationDate(newDate);
-                                setExpirationDateString(newDate.toLocaleDateString(undefined, DATE_OPTIONS));
+                                console.log(m)
+                                setExpirationDate(m.toDate())
+                                setExpirationDateString(m.format("L"));
                             }}
                         />
                         {/* {expirationDate.toLocaleDateString(undefined, DATE_OPTIONS)} */}
@@ -179,7 +188,26 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
                     
                 </View>
                 {/* date picker */}
-                <DatePicker
+                <CalendarModal
+                    visible={expirationDatePickerOpen}
+                    onDateChange={handleExpirationDateChange}
+                    onConfirm={() => setExpirationDatePickerOpen(false)}
+                />
+                {/* <Modal
+                    visible={expirationDatePickerOpen}
+                    onRequestClose={() => setExpirationDatePickerOpen(false)}
+                    transparent={true}
+                    animationType="slide"
+                >
+                    <View style={styles.centeredView}>
+                        <Calendar
+                            onDayPress={day => handleExpirationDateChange(new Date(day.dateString))}
+                        />
+                    </View>
+
+                </Modal> */}
+
+                {/* <DatePicker
                     modal
                     mode='date'
                     open={expirationDatePickerOpen}
@@ -191,7 +219,7 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
                     onCancel={() => {
                         setExpirationDatePickerOpen(false)
                     }}
-                />
+                /> */}
 
 
 
@@ -203,6 +231,16 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+    centeredView: {
+        // flex: 1,
+        justifyContent: 'center',
+        alignSelf:"center",
+        // verticalAlign:'middle',
+        // alignItems: 'center',
+        width:"80%",
+        marginTop: 22,
+    },
+
     itemImage: {
         paddingLeft: 5,
         paddingTop: 15,
