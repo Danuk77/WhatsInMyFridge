@@ -1,4 +1,15 @@
 /* eslint-disable */
+import React, {useMemo} from 'react';
+
+// Redux imports
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUserData } from '../../redux/Actions';
+
+// Types
+import { userData } from '../../config/type';
+
+import axios from 'axios';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Kitchen from './Kitchen';
 import ShoopingList from './ShoppingList';
@@ -18,6 +29,31 @@ const Tab = createBottomTabNavigator();
 
 export const Tabs : React.FC<MainScreenProps> = (props) => {
 
+    const dispatch = useDispatch();
+
+    // Get the user's information when the app starts
+    useMemo(() => {
+    const fetchUserdata = async () => {
+        try{
+        const response = await axios.get("http://127.0.0.1:8000/userInfo/Danuk");
+        const userData:userData = {
+            name: response.data.body.User,
+            fridge: response.data.body.Fridge,
+            freezer: response.data.body.Freezer,
+            shelf: response.data.body.Shelf,
+            ShoppingList: response.data.body.shoppingList
+        }
+
+        dispatch(loadUserData(userData));
+
+        }catch(err){
+        console.log(err);
+        }
+    }
+    fetchUserdata();
+
+    },[]);
+
   return (
     <Tab.Navigator
         screenOptions={{
@@ -31,7 +67,7 @@ export const Tabs : React.FC<MainScreenProps> = (props) => {
         }}>
         <Tab.Screen name="Kitchen" 
             component={Kitchen} 
-            options={{ tabBarIcon: ({ focused }) => focused ? <FontAwesomeIcon icon={faUtensils} color={'#818181'} size={29} /> : <FontAwesomeIcon icon={faUtensils} color={'#F1E3E4'} size={29} /> }}
+            options={{ tabBarIcon: ({ focused }) => focused ? <FontAwesomeIcon icon={faUtensils} color={'#818181'} size={29} /> : <FontAwesomeIcon icon={faUtensils} color={'#F1E3E4'} size={29} />}}
         />
         <Tab.Screen name="ShoppingList" 
             component={ShoopingList}
