@@ -9,10 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUtensils, faShoppingCart, faCog} from "@fortawesome/free-solid-svg-icons"
 
 import Header from './Header';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
+
+type MainScreenProps = NativeStackScreenProps<RootStackParamList, "Main">;
 
 const Tab = createBottomTabNavigator();
 
-export function Tabs() {
+export const Tabs : React.FC<MainScreenProps> = (props) => {
+
   return (
     <Tab.Navigator
         screenOptions={{

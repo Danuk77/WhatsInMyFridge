@@ -4,7 +4,7 @@ import colors from "../../config/colors"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faList, faPlus} from "@fortawesome/free-solid-svg-icons"
 
-export function topBar(): JSX.Element {
+export function TopBar(): JSX.Element {
 
     return (
         <View style={styles.bar}>

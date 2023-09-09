@@ -7,7 +7,7 @@ import { faUtensils, faShoppingCart, faCog} from "@fortawesome/free-solid-svg-ic
 
 
 
-export function bottomBar(): JSX.Element {
+export function BottomBar(): JSX.Element {
 
     return (
         <View style={styles.bar}>
