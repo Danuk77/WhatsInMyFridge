@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 // Import the custom components
-import { FoodItem } from '../Functional components/FoodItem';
+import { FoodItem } from '../Functional components/foodItem';
 
 function Freezer(): JSX.Element {
 
