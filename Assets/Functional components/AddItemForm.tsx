@@ -11,6 +11,7 @@ import {
     ProgressBarAndroidComponent,
     TextInput,
     Modal,
+    Button,
 
 } from 'react-native';
 
@@ -28,7 +29,8 @@ import { getUserLocale } from 'get-user-locale';
 import { parse } from 'date-fns';
 import moment from "moment";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { CalendarModal } from './CalendarModal';
+import { DateSelectorBox } from './DateSelectorBox';
+import { foodItem } from '../../config/type';
 
 // import  from 'react-moment';
 
@@ -49,6 +51,12 @@ const foodImages = new Map<FoodCategory, any>([
     [FoodCategory.Vegetable, require("../imageAssets/Vegetables.png")],
     [FoodCategory.Meat, require("../imageAssets/Meats.png")]
 ]);
+const foodCategoryNames = new Map<FoodCategory, string>([
+    [FoodCategory.Fruit, "Fruit"],
+    [FoodCategory.Vegetable, "Vegetable"],
+    [FoodCategory.Meat, "Meat"]
+]);
+
 
 enum ExpirationType {
     UseBy, // used for items that go off and become dangerous
@@ -57,7 +65,7 @@ enum ExpirationType {
 // maybe good practice for internationalization idk
 const expirationTypeNames = new Map<ExpirationType, string>([
     [ExpirationType.UseBy, "Use By"],
-    [ExpirationType.SellBy, "Best Before"]
+    [ExpirationType.SellBy, "Sell By"]
 ])
 
 
@@ -77,13 +85,15 @@ const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: '2-digit', month: '2-dig
 
 const userLocale = getUserLocale();
 
+type AddItemFormProps = { 
+    onSubmit: (arg0: foodItem) => void; 
+}
 
-export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
+export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
 
     // hooks.
     const [category, setCategory] = useState<FoodCategory>(FoodCategory.Fruit);
-
-
+    const [name, setName]= useState<string>();
     const [quantity, setQuantity] = useState<String>("1");
     function handleQuantityChange(newQuantity: string) : void {
         // remove non digit chars
@@ -94,138 +104,89 @@ export function AddItemForm(/*props: foodItemProps*/): React.JSX.Element {
         }
         setQuantity(clean);
     }
-
-    const [expirationDateString, setExpirationDateString] = useState<string>()
-    const [expirationDate, setExpirationDate] = useState<Date>(new Date())
-    function handleExpirationDateChange(date: Date) : void {
-        setExpirationDate(date);
-        const m = moment(expirationDate);
-        m.locale(userLocale);
-        setExpirationDateString(m.format("L"));
-    }
-    const [expirationDatePickerOpen, setExpirationDatePickerOpen] = useState<boolean>(false);
-
     const [expirationType, setExpirationType] = useState<ExpirationType>(ExpirationType.UseBy);
     const [expirationTypeOpen, setExpirationTypeOpen] = useState<boolean>(false);
-
-
-    const [dateAddedDatePickerOpen, setDateAddedDatePickerOpen] = useState<boolean>(false);
-
-
-    const { handleSubmit, register, setValue, getValues } = useForm<FormData>()
+    const [expirationDate, setExpirationDate] = useState<Date>(new Date())
+    const [dateAdded, setDateAdded] = useState<Date>(new Date(Date.now()))
 
     const iconToRender = foodImages.get(category);
 
     return (
         <View style={styles.foodItem}>
-            {/* Logo of the type of food */}
-            <View style={[styles.itemImage, {flex:1}]}>
-                {/* cycle through food categories on press */}
-                <TouchableOpacity onPress={() => setCategory((category + 1) % FoodCategory.__LENGTH)}>
-                    <Image
-                        style={styles.foodImage}
-                        source={iconToRender}
-                    />
-                </TouchableOpacity>
-
-            </View>
-
-            {/* The content inside the food item entry */}
-            <View style={[styles.foodItemContent, {flex:3}]}>
-                <Text style={styles.fieldTitle}>Product Title & Quantity</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <TextInput 
-                        style={[styles.inputBox, {flex:3, marginRight:5}]} 
-                        onChangeText={(newText) => setValue('name', newText)}
-                        placeholder='Title'
-                    />
-                    <TextInput
-                        style={[styles.inputBox, { flex: 1}]}
-                        keyboardType={'numeric'} // This prop help to open numeric keyboard
-                        value={quantity.toString()}
-                        onChangeText={handleQuantityChange}
-                        placeholder='Qty'
-                    />
-                </View>
-                {/* expiration date line */}
-                <Text style={styles.fieldTitle}>Expiration Date</Text>
-                {expirationTypeNames.values()}
-                <View style={{flexDirection:"row"}}>
-                    <View style={{ flex: 1, marginRight: 5 }}>
-                        <DropDownPicker
-                            style={[styles.inputBox]}
-                            open={expirationTypeOpen}
-                            value={expirationType}
-                            // convert item names to dropdown
-                            items={Array.from(expirationTypeNames.entries()).map(([key, value]) => { return { label: value, value: key } })
-                            }
-                            setValue={setExpirationType}
-                            setOpen={setExpirationTypeOpen}
+            <View style={{flexDirection:'row'}}>
+                {/* Logo of the type of food */}
+                <View style={[styles.itemImage, { flex: 1 }]}>
+                    {/* cycle through food categories on press */}
+                    <TouchableOpacity onPress={() => setCategory((category + 1) % FoodCategory.__LENGTH)}>
+                        <Image
+                            style={styles.foodImage}
+                            source={iconToRender}
                         />
-                    </View>
-                    <View style={[/*styles.inputBox*/, { flex: 1, flexDirection:'row'}]} >
+                    </TouchableOpacity>
+
+                </View>
+
+                {/* The content inside the food item entry */}
+                <View style={[styles.foodItemContent, { flex: 3 }]}>
+                    <Text style={styles.fieldTitle}>Product Title & Quantity</Text>
+                    <View style={{ flexDirection: 'row' }}>
                         <TextInput
-                            style={{ flexGrow: 1}}
-                            value={expirationDateString}
-                            onChangeText={(value) => {setExpirationDateString(value)}}
-                            placeholder={"e.g. " + new Date(Date.now()).toLocaleDateString(undefined, DATE_OPTIONS)}
-                            onBlur={() => {
-                                // const dt = Intl.DateTimeFormat(undefined, DATE_OPTIONS).formatToParts(expirationDateString)
-                                const m = moment(expirationDateString, "L", userLocale);
-                                if (!m.isValid()) {
-                                    return;
+                            style={[styles.inputBox, { flex: 3, marginRight: 5 }]}
+                            onChangeText={setName}
+                            placeholder='Title'
+                        />
+                        <TextInput
+                            style={[styles.inputBox, { flex: 1 }]}
+                            keyboardType={'numeric'} // This prop help to open numeric keyboard
+                            value={quantity.toString()}
+                            onChangeText={handleQuantityChange}
+                            placeholder='Qty'
+                        />
+                    </View>
+                    {/* expiration date line */}
+                    <Text style={styles.fieldTitle}>Expiration Date</Text>
+                    {expirationTypeNames.values()}
+                    <View style={{ flexDirection: "row" }}>
+                        <View style={{ flex: 2, marginRight: 5 }}>
+                            <DropDownPicker
+                                style={[styles.inputBox]}
+                                open={expirationTypeOpen}
+                                value={expirationType}
+                                // convert item names to dropdown
+                                items={Array.from(expirationTypeNames.entries()).map(([key, value]) => { return { label: value, value: key } })
                                 }
-                                console.log(m)
-                                setExpirationDate(m.toDate())
-                                setExpirationDateString(m.format("L"));
-                            }}
+                                setValue={setExpirationType}
+                                setOpen={setExpirationTypeOpen}
+                            />
+                        </View>
+
+                        <DateSelectorBox
+                            style={[styles.inputBox, { flex: 3 }]}
+                            iconStyle={styles.icon}
+                            onDateChange={setExpirationDate}
+                            date={expirationDate}
                         />
-                        {/* {expirationDate.toLocaleDateString(undefined, DATE_OPTIONS)} */}
-                        <TouchableOpacity style={{ flex: 1 }} onPress={() => setExpirationDatePickerOpen(true)}>
-                            <FontAwesomeIcon icon={faCalendar} style={styles.icon}/>
-                        </TouchableOpacity>                    
+
                     </View>
-                    
+                    <Text style={styles.fieldTitle}>Date Added</Text>
+
+                    <DateSelectorBox
+                        style={styles.inputBox}
+                        iconStyle={styles.icon}
+                        onDateChange={setDateAdded}
+                        date={dateAdded}
+                    />
+
                 </View>
-                {/* date picker */}
-                <CalendarModal
-                    visible={expirationDatePickerOpen}
-                    onDateChange={handleExpirationDateChange}
-                    onConfirm={() => setExpirationDatePickerOpen(false)}
-                />
-                {/* <Modal
-                    visible={expirationDatePickerOpen}
-                    onRequestClose={() => setExpirationDatePickerOpen(false)}
-                    transparent={true}
-                    animationType="slide"
-                >
-                    <View style={styles.centeredView}>
-                        <Calendar
-                            onDayPress={day => handleExpirationDateChange(new Date(day.dateString))}
-                        />
-                    </View>
-
-                </Modal> */}
-
-                {/* <DatePicker
-                    modal
-                    mode='date'
-                    open={expirationDatePickerOpen}
-                    date={expirationDate}
-                    onConfirm={(date) => {
-                        setExpirationDatePickerOpen(false);
-                        handleExpirationDateChange(date);
-                    }}
-                    onCancel={() => {
-                        setExpirationDatePickerOpen(false)
-                    }}
-                /> */}
-
-
-
-
-
             </View>
+
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() => props.onSubmit({name: name, type:foodCategoryNames.get(category) as string, expirationDate:expirationDate.toDateString(), startDate:dateAdded.toDateString()} as foodItem)}
+            >
+                <Text style={styles.buttonText}>Add</Text>
+            </TouchableOpacity>
+            
         </View>
     );
 }
@@ -249,11 +210,11 @@ const styles = StyleSheet.create({
     },
     foodItem: {
         width: '90%',
-        flexDirection: 'row',
+        flexDirection: 'column',
         backgroundColor: '#2E81FF',
         borderRadius: 20,
         marginTop: 10,
-        paddingBottom:5
+        paddingBottom:15
     },
     foodImage: {
         width: 80,
@@ -272,7 +233,8 @@ const styles = StyleSheet.create({
     fieldTitle: {
         color: colors.white,
         fontFamily: fonts.primary,
-        fontSize:14
+        fontSize:14,
+        marginBottom:8
     },
     inputBox: {
         backgroundColor:colors.white,
@@ -285,12 +247,28 @@ const styles = StyleSheet.create({
         fontFamily:fonts.primary,
         borderColor:colors.white,
         paddingLeft:4,
-        paddingRight: 4
+        paddingRight: 4,
+        marginBottom:8
 
     },
     icon: {
         color:colors.black,
         alignSelf:'flex-end',
+    },
+    button:{
+        alignSelf:"center",
+        backgroundColor:colors.white,
+        paddingLeft:25,
+        paddingRight: 25,
+        paddingTop:2,
+        paddingBottom: 2,
+        borderRadius: 15,
+
+    },
+    buttonText: {
+        color: colors.black,
+        fontFamily: fonts.primary,
+        fontSize: 20
     }
 })
 
