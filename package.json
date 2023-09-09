@@ -20,12 +20,9 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@reduxjs/toolkit": "^1.9.5",
-<<<<<<< HEAD
     "@types/luxon": "^3.3.2",
     "date-fns": "^2.30.0",
-=======
     "axios": "^1.5.0",
->>>>>>> 8b0933519aa21c5c3d13fc144226671836b34890
     "expo-font": "^11.4.0",
     "get-user-locale": "^2.3.0",
     "install": "^0.13.0",
