@@ -42,8 +42,8 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
 
   // Load the images to show as the food item type
   // const itemBackground = new Map<String, String>([
-  //   ["Fridge", "#2E81FF"],
-  //   ["Freezer", "#7EB2FF"],
+  //   ["Fridge", "#FF5084"],
+  //   ["Freezer", "#2E81FF"],
   //   ["Shelf", "#FDA656"]
   // ]);
 
@@ -51,12 +51,12 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
   const exp : Date = new Date();
   const daysLeft = Math.floor((props.expirationDate.getTime() - exp.getTime())/ (1000 * 60 * 60 * 24));
 
-
+  
   return (
     <View style={[styles.foodItem, 
-              props.location === "Fridge" ? {backgroundColor:'#FF5084'} : 
+              props.location === "Fridge" ? {backgroundColor:'#2E81FF'} : 
               props.location === "Freezer" ? {backgroundColor: '#2E81FF'} :
-              {backgroundColor : "#FDA656"}
+              {backgroundColor : "#2E81FF"}
             ]}>
       {/* Logo of the type of food */}
         <View style={styles.itemImage}>

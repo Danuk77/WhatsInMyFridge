@@ -16,18 +16,21 @@ import Shelf from './Shelf';
 // Import redux hooks
 import { useSelector } from 'react-redux';
 
+const foodImages = new Map<String, React.FC>([
+  ['Fridge', Fridge],
+  ['Freezer', Freezer],
+  ['Shelf', Shelf]
+]);
+
 function Kitchen(): JSX.Element {
 
   const mode = useSelector((state:any) => state.kitchenMode);
-  const foodImages = new Map<String, any>([
-      ['Fridge', <Fridge/>],
-      ['Freezer', <Freezer/>],
-      ['Shelf', <Shelf/>]
-  ]);
+
+  const renderComponent = foodImages.get(mode)!;
 
   return (
     <SafeAreaView style={styles.container}>
-      {foodImages.get(mode)}
+      {renderComponent({})} 
     </SafeAreaView>
   );
 }
