@@ -1,9 +1,11 @@
-import { Button, GestureResponderEvent, Modal, StyleSheet, View } from 'react-native';
+import { Button, GestureResponderEvent, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import colors from '../../config/colors';
 import { useState } from 'react';
+import moment from 'moment';
 
-type CalendarModalProps = { 
+type CalendarModalProps = {
+    date: Date, 
     visible: boolean | undefined; 
     onConfirm: ((event: GestureResponderEvent) => void) | undefined; 
     onDateChange: (arg0: Date) => void | undefined; 
@@ -14,8 +16,9 @@ export function CalendarModal(props: CalendarModalProps): React.JSX.Element {
     const [selectedDate, setSelectedDate] = useState<string|undefined>(undefined);
 
     var markedDates = Object();
-    if (selectedDate !== undefined)
-        markedDates[selectedDate] = { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' };
+    // create the markedDates prop argument for the calendar
+    if (props.date !== undefined)
+        markedDates[moment(props.date).format("YYYY-MM-DD")] = { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' };
 
     return <Modal
         visible={props.visible}
@@ -23,24 +26,33 @@ export function CalendarModal(props: CalendarModalProps): React.JSX.Element {
         transparent={true}
         animationType="slide"
     >
-        <View style={styles.centeredView}>
-            <Calendar
-                date={selectedDate}
-                onDayPress={day => {
-                    console.log(day.dateString);
-                    console.log(new Date(day.dateString));
-                    if (props.onDateChange !== undefined) {
-                        console.log("change date")
-                        props.onDateChange(new Date(day.dateString))
-                    }
-                    setSelectedDate(day.dateString);
-                }}
-                markedDates={markedDates}
-            />
-            <View style={{flexDirection:'row'}}>
-                <Button title='OK' onPress={props.onConfirm}></Button>
+        {/* TouchableOpacity is the background so the calendar quits when the user presses it (clicks outside the calendar) */}
+        <TouchableOpacity
+            style={{height:"100%"}}
+            activeOpacity={1}
+            onPressOut={props.onConfirm}
+        >
+            <View style={styles.centeredView}>
+                <Calendar
+                    style={styles.calendar}
+                    date={moment(props.date).format("YYYY-MM-DD")}
+                    onDayPress={day => {
+                        console.log(day.dateString);
+                        console.log(new Date(day.dateString));
+                        if (props.onDateChange !== undefined) {
+                            console.log("change date")
+                            props.onDateChange(new Date(day.dateString))
+                        }
+                        setSelectedDate(day.dateString);
+                    }}
+                    markedDates={markedDates}
+                />
+                <View style={{ alignItems: "center" }} >
+                    <Button title='OK' onPress={props.onConfirm} ></Button>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
+        
 
     </Modal>
 }
@@ -55,6 +67,14 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         width:"80%",
         marginTop: 22,
-        backgroundColor:colors.white
+        backgroundColor:colors.white,
+        borderRadius:20,
+        paddingBottom:10
+    },
+    calendar: {
+        borderRadius: 20
+    },
+    button:{
+
     }
 })

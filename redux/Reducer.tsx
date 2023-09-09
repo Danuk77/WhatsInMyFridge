@@ -26,6 +26,28 @@ export default function reducer(state=initialState, action:any){
                 Shelf: action.payload.shelf,
                 shoppingList: action.payload.shoppingList
             }
+        case "addFoodItem":
+            switch (action.payload.type) {
+                case "Fridge":
+                    return {
+                        ...state,
+                        // newItem needs to be of type foodItem
+                        Fridge: [...state.Fridge, action.payload.newItem]
+                    }
+                case "Freezer":
+                    return {
+                        ...state,
+                        // newItem needs to be of type foodItem
+                        Freezer: [...state.Freezer, action.payload.newItem]
+                    }
+                case "Shelf":
+                    return {
+                        ...state,
+                        // newItem needs to be of type foodItem
+                        Shelf: [...state.Shelf, action.payload.newItem]
+                    }
+            }
+
         case 'showFilters':
             return{
                 ...state,

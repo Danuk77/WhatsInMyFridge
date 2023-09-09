@@ -17,7 +17,9 @@ export const AddItem:React.FC<AddItemScreenProps> = (props) => {
         {/* header TODO*/}
 
         <Text style={styles.headingText} >Add new item</Text>
-        <AddItemForm></AddItemForm>
+        <AddItemForm onSubmit={(item) => {
+                
+        }}></AddItemForm>
 
     </SafeAreaView>
 }
