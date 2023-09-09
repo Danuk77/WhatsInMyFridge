@@ -6,7 +6,8 @@ const initialState = {
     Fridge: [],
     Freezer: [],
     Shelf: [],
-    ShoppingList: []
+    ShoppingList: [],
+    showFilters: false
 }
 
 export default function reducer(state=initialState, action:any){
@@ -24,6 +25,11 @@ export default function reducer(state=initialState, action:any){
                 Freezer: action.payload.freezer,
                 Shelf: action.payload.shelf,
                 shoppingList: action.payload.shoppingList
+            }
+        case 'showFilters':
+            return{
+                ...state,
+                showFilters: !state.showFilters
             }
         default:
             return state

@@ -25,3 +25,10 @@ export const loadUserData = (data:userData) => {
         }
     }
 }
+
+// Action dispatched to show and hide the filter menu for the food items
+export const showFilters = () => {
+    return{
+        type: 'showFilters'
+    }
+}

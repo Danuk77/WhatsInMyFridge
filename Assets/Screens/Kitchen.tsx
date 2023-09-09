@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  ScrollView
+  Button,
+  Modal
 } from 'react-native';
 
 // Import the fridge, freezer and the shelf
@@ -13,18 +14,18 @@ import Fridge from './Fridge';
 import Freezer from './Freezer';
 import Shelf from './Shelf';
 
-// Import redux hooks
-import { useSelector } from 'react-redux';
+// Filters
+import FiltersKitchen from './FiltersKitchen';
 
-// const foodImages = new Map<String, React.FC>([
-//   ['Fridge', Fridge],
-//   ['Freezer', Freezer],
-//   ['Shelf', Shelf]
-// ]);
+import { showFilters } from '../../redux/Actions';
+
+// Import redux hooks
+import { useSelector, useDispatch } from 'react-redux';
 
 
 function Kitchen(): JSX.Element {
 
+  const dispatch = useDispatch();
   const mode = useSelector((state:any) => state.kitchenMode);
   var RenderComponent;
 
@@ -41,6 +42,7 @@ function Kitchen(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FiltersKitchen/>
       <RenderComponent key ={mode} items={internalContent}/>
     </SafeAreaView>
   );

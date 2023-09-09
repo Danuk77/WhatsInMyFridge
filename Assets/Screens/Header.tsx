@@ -12,7 +12,8 @@ import colors from '../../config/colors';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
-import { changeKitchenMode } from '../../redux/Actions';
+import { changeKitchenMode, showFilters } from '../../redux/Actions';
+
 
 
 // Font awesome
@@ -30,8 +31,6 @@ function Header(): JSX.Element {
 // TODO Change which header to see depending on which tab we are on
 // TODO Change which header to see depending on which tab we are on
 // TODO Change which header to see depending on which tab we are on
-// TODO Change the below state to redux
-
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
     const dispatch = useDispatch();
@@ -41,7 +40,7 @@ function Header(): JSX.Element {
         <View style={styles.bar}>
             <Text style={styles.headerText}>WhatsInMyFridge</Text>
             <View style={styles.iconContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => dispatch(showFilters())}>
                     <FontAwesomeIcon icon={faList} size={30} style={styles.icon} />
                 </TouchableOpacity>
             </View>
