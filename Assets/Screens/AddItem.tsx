@@ -6,9 +6,13 @@ import colors from "../../config/colors"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../../types"
 import { AddItemForm } from "../Functional components/AddItemForm"
+import backend from "../../config/backend"
 
 type AddItemScreenProps = NativeStackScreenProps<RootStackParamList, "AddItem">;
 
+
+const user = "Danuk";
+const storage = "Fridge";
 
 export const AddItem:React.FC<AddItemScreenProps> = (props) => {
 
@@ -18,7 +22,18 @@ export const AddItem:React.FC<AddItemScreenProps> = (props) => {
 
         <Text style={styles.headingText} >Add new item</Text>
         <AddItemForm onSubmit={(item) => {
-                
+            fetch(`${backend.url}/userItems/${user}/${storage}`, {
+                method:"POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify(item)
+            })
+            .then((respose) => respose.json())
+            .then((responseData) => {
+                console.log(JSON.stringify(responseData));
+            });
         }}></AddItemForm>
 
     </SafeAreaView>

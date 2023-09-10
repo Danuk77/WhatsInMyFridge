@@ -39,7 +39,7 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
 
     return <View style={[props.style, styles.inputBox]}>
         <TextInput
-            style={{ flexGrow: 1, color:colors.black, height:40}}
+            style={styles.text}
             value={dateString}
             onChangeText={setDateString}
             placeholder={"e.g. " + now.format("L")}
@@ -70,6 +70,15 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
 }
 
 const styles = StyleSheet.create({
+    text: { 
+        flexGrow: 1, 
+        color: colors.black,
+        fontFamily:fonts.primary,
+        height: 50, 
+        position: "relative",
+        top:-15,
+        left:-2
+    },
     centeredView: {
         // flex: 1,
         justifyContent: 'center',
@@ -107,5 +116,6 @@ const styles = StyleSheet.create({
     icon: {
         color: colors.black,
         alignSelf: 'flex-end',
+        top:-2
     }
 })
