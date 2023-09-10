@@ -32,3 +32,28 @@ export const showFilters = () => {
         type: 'showFilters'
     }
 }
+
+// Action dispatched to change the filters for the food types
+export const changeFilter = (type:String) => {
+    return{
+        type: 'changeFilter',
+        payload : {
+            type: type
+        }
+    }
+}
+
+/**
+ * Action dispatched to change the order of sorting in the food items
+ * @param current The current mode we are in
+ * @param size The total number of modes available
+ */
+export const changeSortMode = (current: number, size:number) => {
+    const newMode = (current + 1) % size;
+    return{
+        type:'changeSortMode',
+        payload: {
+            value: newMode
+        }
+    };
+}

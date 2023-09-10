@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import { createStoreHook } from "react-redux"
+
 const initialState = {
     kitchenMode: 'Fridge',
     userName: '',
@@ -7,7 +9,11 @@ const initialState = {
     Freezer: [],
     Shelf: [],
     ShoppingList: [],
-    showFilters: false
+    showFilters: false,
+    showFruits: true,
+    showVegetables: true,
+    showMeats: true,
+    sortMode: 0
 }
 
 export default function reducer(state=initialState, action:any){
@@ -52,6 +58,31 @@ export default function reducer(state=initialState, action:any){
             return{
                 ...state,
                 showFilters: !state.showFilters
+            }
+
+        // Reducer for changing the filters (what type of food is seen)
+        case 'changeFilter':
+            switch (action.payload.type){
+                case 'Fruit':
+                    return{
+                        ...state,
+                        showFruits : !state.showFruits
+                    }
+                case 'Vegetable':
+                    return{
+                        ...state,
+                        showVegetables : !state.showVegetables
+                    }
+                case 'Meat':
+                    return{
+                        ...state,
+                        showMeats : !state.showMeats
+                    }
+            }
+        case 'changeSortMode':
+            return{
+                ...state,
+                sortMode: action.payload.value
             }
         default:
             return state

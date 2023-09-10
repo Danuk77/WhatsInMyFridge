@@ -15,7 +15,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { showFilters } from '../../redux/Actions';
+import { showFilters, changeSortMode } from '../../redux/Actions';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,12 +25,16 @@ import FilterFoodType from './FilterFoodType';
 
 function FiltersKitchen(): JSX.Element {
 
-  const dispatch = useDispatch();
-  const mode = useSelector((state:any) => state.kitchenMode);
+    const dispatch = useDispatch();
+    const mode = useSelector((state:any) => state.kitchenMode);
+    const fruitsShowing = useSelector((state:any) => state.showFruits);
+    const vegetablesShowing = useSelector((state:any) => state.showVegetables);
+    const meatsShowing = useSelector((state:any) => state.showMeats);
+    const sortMode = useSelector((state:any) => state.sortMode);
 
+    const sortMethods = ["Added date", "Expiring soon", "Expiring late"];
 
-
-  return (
+    return (
     <Modal
     animationType="slide"
     transparent={true}
@@ -52,28 +56,18 @@ function FiltersKitchen(): JSX.Element {
                 <View style={{flex:1, flexDirection:'row', width: '100%'}}>
                     <Text style={[styles.title, {fontSize: 18}]}>Food Type:</Text>
                     <View style={{flex:2, flexDirection:'row', justifyContent:'space-evenly', alignItems: 'center', paddingRight: '10%'}}>
-                        <FilterFoodType type="Fruit"/>
-                        <FilterFoodType type="Vegetable"/>
-                        <FilterFoodType type="Meat"/>
+                        <FilterFoodType type="Fruit" shown={fruitsShowing}/>
+                        <FilterFoodType type="Vegetable" shown={vegetablesShowing}/>
+                        <FilterFoodType type="Meat" shown={meatsShowing}/>
                     </View>
                 </View>
 
-                <View style={{flex:1, flexDirection:'row', width: '100%'}}>
+                <View style={{flex:2, flexDirection:'row', width: '100%'}}>
                     <Text style={[styles.title, {fontSize: 18}]}>Sort Items:</Text>
                     <View style={{flex:2, flexDirection:'row', justifyContent:'center', alignItems: 'center', paddingRight: '10%'}}>
-                        <TouchableOpacity style={{width:'80%',backgroundColor:'white', borderRadius:10, alignItems:'center', justifyContent:'center', padding:'1%'}}>
-                            <Text> 1 </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={{flex:1, flexDirection:'row', width: '100%'}}>
-                    <View style={styles.buttonBackground}>
-                        <TouchableOpacity style={styles.applyButton}
-                                            onPress={() => {dispatch(showFilters())}}>
-                            <Text style={{fontSize: 16, color:'#616161'}}>
-                                Apply
-                            </Text>
+                        <TouchableOpacity style={{width:'80%', height:'30%', backgroundColor:'white', borderRadius:10, alignItems:'center', justifyContent:'center', padding:'1%'}}
+                            onPress={() => dispatch(changeSortMode(sortMode, sortMethods.length))}>
+                            <Text> {sortMethods[sortMode]} </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
