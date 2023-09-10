@@ -16,14 +16,13 @@ import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStac
 
 
 type progressBarProps = {
-    startDate: number,
-    expiryDate: number
+    progress:number
 }
 
 export function ProgressBar(props:progressBarProps): JSX.Element {
 
     // State variable to sotre how close the item is to expire
-    const [width, setWidth] = useState<number>(props.startDate);
+    const [width, setWidth] = useState<number>(props.progress);
     const [color, setColor] = useState<string>('#52FF00');
 
     const increaseWidth = useCallback(() => {
@@ -54,7 +53,7 @@ export function ProgressBar(props:progressBarProps): JSX.Element {
     // The function is like the constructor for the progress bar
     const setUpBar = useEffect(() => {
         // Set the colour of the progress bar
-        setColor(getColor(props.startDate));
+        setColor(getColor(props.progress));
     },[]);
 
     return (

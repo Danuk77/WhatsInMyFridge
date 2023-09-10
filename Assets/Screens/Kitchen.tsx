@@ -9,11 +9,6 @@ import {
   Modal
 } from 'react-native';
 
-// Import the fridge, freezer and the shelf
-import Fridge from './Fridge';
-import Freezer from './Freezer';
-import Shelf from './Shelf';
-
 // Filters
 import FiltersKitchen from './FiltersKitchen';
 
@@ -22,20 +17,12 @@ import { showFilters } from '../../redux/Actions';
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 
+import KitchenItem from './KitchenItem';
+
 
 function Kitchen(): JSX.Element {
 
-  const dispatch = useDispatch();
   const mode = useSelector((state:any) => state.kitchenMode);
-  var RenderComponent;
-
-  if (mode === 'Fridge'){
-    RenderComponent = Fridge
-  }else if(mode === 'Freezer'){
-    RenderComponent = Freezer
-  }else {
-    RenderComponent = Shelf
-  }
 
   // Get the content to be used
   const internalContent = useSelector((state:any) => state[mode]);
@@ -43,7 +30,8 @@ function Kitchen(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <FiltersKitchen/>
-      <RenderComponent key ={mode} items={internalContent}/>
+      <KitchenItem items={internalContent} location={mode}/>
+      {/* <RenderComponent key ={mode} items={internalContent}/> */}
     </SafeAreaView>
   );
 }

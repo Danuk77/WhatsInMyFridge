@@ -22,6 +22,7 @@ type foodItemProps = {
   type: String;
   expirationDate:Date;
   location: String;
+  startDate: Date;
 }
 
 
@@ -40,17 +41,14 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     ["Meat", require("../imageAssets/Meats.png")]
   ]);
 
-  // Load the images to show as the food item type
-  // const itemBackground = new Map<String, String>([
-  //   ["Fridge", "#FF5084"],
-  //   ["Freezer", "#2E81FF"],
-  //   ["Shelf", "#FDA656"]
-  // ]);
-
   // Expiration date of the food item
   const exp : Date = new Date();
   const daysLeft = Math.floor((props.expirationDate.getTime() - exp.getTime())/ (1000 * 60 * 60 * 24));
 
+  const duration = (props.expirationDate.getTime() - props.startDate.getTime());
+  const current = ((new Date()).getTime() - props.startDate.getTime());
+
+  const progress:number = parseFloat(((current/duration) * 100).toFixed());
   
   return (
     <View style={[styles.foodItem, 
@@ -112,7 +110,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
               flex:1,
               justifyContent:'center'
             }}>
-              <ProgressBar startDate={Math.floor(Math.random() * 101)} expiryDate={7}/>
+              <ProgressBar progress={progress}/>
             </View>
 
         </View>

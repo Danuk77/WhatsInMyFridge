@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Button, GestureResponderEvent, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import colors from '../../config/colors';

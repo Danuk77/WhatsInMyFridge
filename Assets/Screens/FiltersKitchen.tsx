@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     outerBox: {
       width: '100%',
       height: '40%',
-      backgroundColor: '#2E81FF',
+      backgroundColor: '#2E4FFF',
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
       alignItems: 'center',
