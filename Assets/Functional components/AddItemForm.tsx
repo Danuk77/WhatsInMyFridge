@@ -182,7 +182,7 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
 
             <TouchableOpacity 
                 style={styles.button} 
-                onPress={() => props.onSubmit({name: name, type:foodCategoryNames.get(category) as string, expirationDate:expirationDate.toDateString(), startDate:dateAdded.toDateString()} as foodItem)}
+                onPress={() => props.onSubmit({name: name, type:foodCategoryNames.get(category) as string, expirationDate:moment(expirationDate).format("YYYY-MM-DD"), startDate:moment(dateAdded).format("YYYY-MM-DD")} as foodItem)}
             >
                 <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
