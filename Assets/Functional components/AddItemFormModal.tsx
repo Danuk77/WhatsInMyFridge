@@ -21,6 +21,7 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
         visible={props.visible}
         transparent={true}
         animationType="slide"
+        onRequestClose={props.onClose}
         // style={{vre}}
     >
         <Pressable
