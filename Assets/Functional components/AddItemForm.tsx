@@ -12,6 +12,7 @@ import {
     TextInput,
     Modal,
     Button,
+    ViewStyle,
 
 } from 'react-native';
 
@@ -87,6 +88,8 @@ const userLocale = getUserLocale();
 
 type AddItemFormProps = { 
     onSubmit: (arg0: foodItem) => void; 
+    style: ViewStyle | undefined;
+
 }
 
 export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
@@ -112,7 +115,7 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
     const iconToRender = foodImages.get(category);
 
     return (
-        <View style={styles.foodItem}>
+        <View style={[props.style, styles.foodItem]}>
             <View style={{flexDirection:'row'}}>
                 {/* Logo of the type of food */}
                 <View style={[styles.itemImage, { flex: 1 }]}>
@@ -211,7 +214,7 @@ const styles = StyleSheet.create({
     foodItem: {
         width: '90%',
         flexDirection: 'column',
-        backgroundColor: '#2E81FF',
+        backgroundColor: colors.dark_blue,
         borderRadius: 20,
         marginTop: 10,
         paddingBottom:15

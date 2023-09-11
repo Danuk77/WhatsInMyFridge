@@ -10,6 +10,7 @@ const initialState = {
     Shelf: [],
     ShoppingList: [],
     showFilters: false,
+    showAddItemForm: false,
     showFruits: true,
     showVegetables: true,
     showMeats: true,
@@ -58,6 +59,12 @@ export default function reducer(state=initialState, action:any){
             return{
                 ...state,
                 showFilters: !state.showFilters
+            }
+        
+        case "showAddItemForm":
+            return {
+                ...state,
+                showAddItemForm: !state.showAddItemForm
             }
 
         // Reducer for changing the filters (what type of food is seen)

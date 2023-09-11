@@ -12,7 +12,7 @@ import colors from '../../config/colors';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
-import { changeKitchenMode, showFilters } from '../../redux/Actions';
+import { changeKitchenMode, showAddItemForm, showFilters } from '../../redux/Actions';
 
 
 
@@ -45,7 +45,7 @@ function Header(): JSX.Element {
                 </TouchableOpacity>
             </View>
             <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('AddItem')}>
+                <TouchableOpacity onPress={() => dispatch(showAddItemForm())}>
                     <FontAwesomeIcon icon={faPlus} size={30} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
