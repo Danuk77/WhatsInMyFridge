@@ -243,15 +243,15 @@ const styles = StyleSheet.create({
         backgroundColor:colors.white,
         borderRadius:7,
         padding:5,
-        height:30,
-        minHeight:30,
-        maxHeight:30,
+        height:45,
+        minHeight:45,
+        maxHeight:45,
         color:colors.black,
         fontFamily:fonts.primary,
         borderColor:colors.white,
         paddingLeft:4,
         paddingRight: 4,
-        marginBottom:8
+        marginBottom:10
 
     },
     icon: {

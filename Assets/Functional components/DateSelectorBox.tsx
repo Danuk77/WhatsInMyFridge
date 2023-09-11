@@ -37,7 +37,7 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
         setDateString(m.format("L"));
     }
 
-    return <View style={[props.style, styles.inputBox]}>
+    return <View style={[styles.inputBox, props.style]}>
         <TextInput
             style={styles.text}
             value={dateString}
@@ -49,7 +49,7 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
             style={{ flex: 1, alignSelf:"flex-end"}} 
             onPress={() => {setCalendarOpen(true); handleTextDefocus()}}
         >
-            <FontAwesomeIcon icon={faCalendar} style={[props.iconStyle, styles.icon]} />
+            <FontAwesomeIcon icon={faCalendar} style={[props.iconStyle, styles.icon]} size={20}/>
         </TouchableOpacity> 
         <CalendarModal
             visible={calendarOpen}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         fontFamily:fonts.primary,
         height: 50, 
         position: "relative",
-        top:-15,
+        top:-8,
         left:-2
     },
     centeredView: {
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     icon: {
         color: colors.black,
         alignSelf: 'flex-end',
-        top:-2
+        top:-8,
+        right:2
     }
 })
