@@ -29,8 +29,8 @@ type foodItemProps = {
 
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
-  console.log(props.id);
 
+  console.log(props.id);
   // TODO
   // Function for handling what to do when the user clicks on the edit button
   const handleEdit = useCallback(() => {

@@ -35,12 +35,6 @@ export async function addItemToKitchen(userName: string, kitchenMode: string, it
         body: JSON.stringify(body)
     });
     return response;
-    
-        // .then((respose) => respose.json())
-        // .then((responseData) => {
-        //     console.log(JSON.stringify(responseData));
-
-        // });
 }
 
 

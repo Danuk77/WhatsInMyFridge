@@ -62,8 +62,11 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
                     style={styles.box}
                     onSubmit={async (item) => {
                         var response;
+                        var newID:string;
                         try{
                             response = await addItemToKitchen(userName, kitchenMode, item);
+                            newID = JSON.parse(await response.text()).id;
+                            
                         }catch(err){
                             Alert.alert('Failed to add item', "Please try again later", [
                                 { text: 'OK'},
@@ -80,6 +83,8 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
                             return;
                         }
 
+                        // Set up the new id
+                        item.id = newID;
                         dispatch(addNewFoodItem(kitchenMode, item));
                         props.onClose();
                     }}
