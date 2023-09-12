@@ -4,15 +4,9 @@ import { faWifi } from '@fortawesome/free-solid-svg-icons';
 import React, {useCallback, useState, useEffect} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Button
 
 } from 'react-native';
-import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 
 type progressBarProps = {
@@ -62,15 +56,6 @@ export function ProgressBar(props:progressBarProps): JSX.Element {
                     backgroundColor:color,
                     borderRadius:20}]}></View>
     </View>
-
-    // Button used for testing the progress bar
-    // <Button
-    //     onPress={increaseWidth}
-    //     title="Make bigger"
-    //     color="#841584"
-    // />
-
-
     );
 }
 

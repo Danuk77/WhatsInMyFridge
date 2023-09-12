@@ -91,6 +91,11 @@ export default function reducer(state=initialState, action:any){
                 ...state,
                 sortMode: action.payload.value
             }
+        case 'userLoggedIn':
+            return{
+                ...state,
+                userName: action.payload.value
+            }
         default:
             return state
     }

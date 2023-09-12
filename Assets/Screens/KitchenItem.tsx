@@ -12,14 +12,6 @@ import {
 import { FoodItem } from '../Functional components/FoodItem';
 import { useSelector } from 'react-redux';
 
-const sorting = (a:number, b:number) => {
-    if (a > b){
-        return 1;
-    }else{
-        return -1;
-    }
-}
-
 function KitchenItem(props:any): JSX.Element {
     const filterMap = new Map<String, any>([
         ['Fruit', useSelector((state:any) => state.showFruits)],
@@ -50,15 +42,12 @@ function KitchenItem(props:any): JSX.Element {
             break;
     }
 
-    console.log(sorted);
-
-
     return (
         <ScrollView style={{width:'100%'}}>
         <View style= {{alignItems:'center'}}>
 
             {sorted.map((item:foodItem, index:number) => (
-            <FoodItem key={`${props.location}(${index})`} location={props.location} name={item.name} type={item.type} expirationDate={new Date(`${item.expirationDate}`)} startDate={new Date(`${item.startDate}`)}/>
+            <FoodItem key={`${props.location}(${index})`} location={props.location} name={item.name} type={item.type} expirationDate={new Date(`${item.expirationDate}`)} startDate={new Date(`${item.startDate}`)} expirationType={item.expirationType} quantity={item.quantity}/>
             ))}
 
         </View>

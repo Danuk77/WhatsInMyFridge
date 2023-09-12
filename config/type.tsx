@@ -1,5 +1,10 @@
 /* eslint-disable */
-export type foodItem = {name:String, type:String, expirationDate:String, startDate:String}
+export type foodItem = {name:String, 
+    type:String, expirationDate:String, 
+    startDate:String, 
+    quantity: number, 
+    expirationType:String
+}
 
 export type userData = {
     name:string,
