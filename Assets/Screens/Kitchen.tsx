@@ -12,17 +12,19 @@ import {
 // Filters
 import FiltersKitchen from './FiltersKitchen';
 
-import { showFilters } from '../../redux/Actions';
+import { showAddItemForm, showFilters } from '../../redux/Actions';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 
 import KitchenItem from './KitchenItem';
+import { AddItemFormModal } from '../Functional components/AddItemFormModal';
 
 
 function Kitchen(): JSX.Element {
 
   const mode = useSelector((state:any) => state.kitchenMode);
+  const dispatch = useDispatch();
 
   // Get the content to be used
   const internalContent = useSelector((state:any) => state[mode]);
@@ -30,6 +32,10 @@ function Kitchen(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <FiltersKitchen/>
+      <AddItemFormModal
+        onClose={() => dispatch(showAddItemForm())}
+        visible={useSelector((state: any) => state.showAddItemForm)}
+      />
       <KitchenItem items={internalContent} location={mode}/>
       {/* <RenderComponent key ={mode} items={internalContent}/> */}
     </SafeAreaView>

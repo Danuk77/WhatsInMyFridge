@@ -33,25 +33,28 @@ export function CalendarModal(props: CalendarModalProps): React.JSX.Element {
             activeOpacity={1}
             onPressOut={props.onConfirm}
         >
-            <View style={styles.centeredView}>
-                <Calendar
-                    style={styles.calendar}
-                    date={moment(props.date).format("YYYY-MM-DD")}
-                    onDayPress={day => {
-                        console.log(day.dateString);
-                        console.log(new Date(day.dateString));
-                        if (props.onDateChange !== undefined) {
-                            console.log("change date")
-                            props.onDateChange(new Date(day.dateString))
-                        }
-                        setSelectedDate(day.dateString);
-                    }}
-                    markedDates={markedDates}
-                />
-                <View style={{ alignItems: "center" }} >
-                    <Button title='OK' onPress={props.onConfirm} ></Button>
+            <View style={{justifyContent:"center", height:"100%"}}>
+                <View style={styles.centeredView}>
+                    <Calendar
+                        style={styles.calendar}
+                        date={moment(props.date).format("YYYY-MM-DD")}
+                        onDayPress={day => {
+                            console.log(day.dateString);
+                            console.log(new Date(day.dateString));
+                            if (props.onDateChange !== undefined) {
+                                console.log("change date")
+                                props.onDateChange(new Date(day.dateString))
+                            }
+                            setSelectedDate(day.dateString);
+                        }}
+                        markedDates={markedDates}
+                    />
+                    <View style={{ alignItems: "center" }} >
+                        <Button title='OK' onPress={props.onConfirm} ></Button>
+                    </View>
                 </View>
             </View>
+            
         </TouchableOpacity>
         
 

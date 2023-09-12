@@ -33,6 +33,12 @@ export const showFilters = () => {
     }
 }
 
+export const showAddItemForm = () => {
+    return {
+        type: 'showAddItemForm'
+    }
+}
+
 // Action dispatched to change the filters for the food types
 export const changeFilter = (type:String) => {
     return{

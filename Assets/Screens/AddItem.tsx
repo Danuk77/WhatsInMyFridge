@@ -7,36 +7,38 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../../types"
 import { AddItemForm } from "../Functional components/AddItemForm"
 import backend from "../../config/backend"
+import { useDispatch, useSelector } from "react-redux"
+import {addItemToKitchen, getUserData} from "../../Utils/endpoints"
+import { loadUserData } from "../../redux/Actions"
 
 type AddItemScreenProps = NativeStackScreenProps<RootStackParamList, "AddItem">;
 
-
-const user = "Danuk";
-const storage = "Fridge";
-
 export const AddItem:React.FC<AddItemScreenProps> = (props) => {
+
+    const kitchenMode = useSelector((state: any) => state.kitchenMode);
+    const userName = useSelector((state: any) => state.userName);
+    const dispatch = useDispatch();
+
 
     return <SafeAreaView>
 
         {/* header TODO*/}
 
         <Text style={styles.headingText} >Add new item</Text>
-        <AddItemForm onSubmit={(item) => {
-            fetch(`${backend.url}/userItems/${user}/${storage}`, {
-                method:"POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body:JSON.stringify(item)
-            })
-            .then((respose) => respose.json())
-            .then((responseData) => {
-                console.log(JSON.stringify(responseData));
-            });
+        <AddItemForm 
+            style={{}}
+            onSubmit={async (item) => {
+                await addItemToKitchen(userName, kitchenMode, item);
+                const newData = await getUserData(userName);
+                if (newData !== undefined) {
+                    dispatch(loadUserData(newData)) 
+                } else {
+                    console.log("unable to reload user data")
+                }
         }}></AddItemForm>
 
     </SafeAreaView>
+
 }
 
 
