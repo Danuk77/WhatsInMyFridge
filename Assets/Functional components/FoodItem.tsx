@@ -23,6 +23,8 @@ type foodItemProps = {
   expirationDate:Date;
   location: String;
   startDate: Date;
+  expirationType: String;
+  quantity: number;
 }
 
 
@@ -76,7 +78,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
                 fontSize:20,
                 color:'white',
               }}>
-                {props.name}
+                {`${props.name} (${props.quantity})`}
               </Text>
 
               {/* Edit button click */}
@@ -100,7 +102,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
                 color:'white',
                 paddingEnd:'5%'
               }}>
-                {`Exp: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${daysLeft} days)`}
+                {`${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${daysLeft} days)`}
               </Text>
 
             </View>
