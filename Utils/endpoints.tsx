@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from "axios";
 import backend from "../config/backend";
 import { foodItem, userData } from '../config/type';

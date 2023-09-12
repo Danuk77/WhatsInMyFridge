@@ -63,3 +63,19 @@ export const changeSortMode = (current: number, size:number) => {
         }
     };
 }
+
+/**
+ * Action dispatched when adding a new item to the kitchen
+ * @param location Fridge, freezer or shelf
+ * @param foodItem The food item being added to the particular location
+ * @returns Object used by reducer
+ */
+export const addNewFoodItem = (location: string, foodItem:foodItem) => {
+    return{
+        type:'addFoodItem',
+        payload: {
+            type: location,
+            newItem: foodItem
+        }
+    };
+}

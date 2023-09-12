@@ -62,12 +62,12 @@ const foodCategoryNames = new Map<FoodCategory, string>([
 
 enum ExpirationType {
     UseBy, // used for items that go off and become dangerous
-    SellBy // less dangerous
+    BestBefore // less dangerous
 }
 // maybe good practice for internationalization idk
 const expirationTypeNames = new Map<ExpirationType, string>([
     [ExpirationType.UseBy, "Use By"],
-    [ExpirationType.SellBy, "Sell By"]
+    [ExpirationType.BestBefore, "Best Before"]
 ])
 
 
@@ -170,7 +170,9 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
             name: name,
             type: foodCategoryNames.get(category) as string,
             expirationDate: moment(expirationDate).format("YYYY-MM-DD"),
-            startDate: moment(dateAdded).format("YYYY-MM-DD")
+            startDate: moment(dateAdded).format("YYYY-MM-DD"),
+            quantity: quantityInt,
+            expirationType: expirationTypeNames.get(expirationType)
         } as foodItem);
 
     }

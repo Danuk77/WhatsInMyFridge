@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { useCallback, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AddItemForm } from './AddItemForm';
 import { addItemToKitchen, getUserData } from '../../Utils/endpoints';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUserData } from '../../redux/Actions';
+import { addNewFoodItem } from '../../redux/Actions';
 import colors from '../../config/colors';
 import fonts from '../../config/fonts';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -40,7 +41,7 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
             <View style={styles.background}>
                 {/* heading text */}
                 <Text style={styles.text}>Add item to {kitchenMode} {""}
-                    <FontAwesomeIcon icon={kitchenModeIcon} color={kitchenModeColor} size={20}/>
+                    <FontAwesomeIcon icon={kitchenModeIcon} color={kitchenModeColor} size={30}/>
                 </Text>
             </View>
         </Modal>
@@ -61,15 +62,14 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
                 <AddItemForm
                     style={styles.box}
                     onSubmit={async (item) => {
-                        await addItemToKitchen(userName, kitchenMode, item);
-                        props.onClose();
-
-                        const newData = await getUserData(userName);
-                        if (newData !== undefined) {
-                            dispatch(loadUserData(newData))
-                        } else {
-                            console.log("unable to reload user data")
+                        try{
+                            const response = await addItemToKitchen(userName, kitchenMode, item);
+                            dispatch(addNewFoodItem(kitchenMode, item));
+                        }catch(err){
+                            console.log(err);
                         }
+                        
+                        props.onClose();
                     }}
                 />
             </View>
