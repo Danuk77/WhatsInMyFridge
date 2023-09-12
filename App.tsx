@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Import the custom components
 import { Tabs } from './Assets/Screens/Tabs';
 import { RootStackParamList } from './types';
+import { Debug } from './Assets/Screens/Debug';
 
 function App(): JSX.Element {
 
@@ -29,6 +30,7 @@ function App(): JSX.Element {
           initialRouteName='Main'
           screenOptions={{headerShown: false}}>
           <stack.Screen name="Main" component={Tabs}/>
+          <stack.Screen name="Debug" component={Debug} />
         </stack.Navigator>
       </NavigationContainer>
     </Provider>

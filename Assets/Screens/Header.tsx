@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable
 } from 'react-native';
 
 import colors from '../../config/colors';
@@ -38,7 +39,11 @@ function Header(): JSX.Element {
     return (
     <View style={styles.completeBar}>
         <View style={styles.bar}>
-            <Text style={styles.headerText}>WhatsInMyFridge</Text>
+            {/* todo remove debug screen */}
+            <Pressable style={{height:60}} onLongPress={() => navigation.navigate('Debug')}>
+                <Text style={styles.headerText}>WhatsInMyFridge</Text>
+            </Pressable>
+            
             <View style={styles.iconContainer}>
                 <TouchableOpacity onPress={() => dispatch(showFilters())}>
                     <FontAwesomeIcon icon={faList} size={30} style={styles.icon} />
