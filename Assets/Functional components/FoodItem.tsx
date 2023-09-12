@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPen, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
+import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 
 type foodItemProps = {
   name: String;
@@ -23,10 +24,12 @@ type foodItemProps = {
   startDate: Date;
   expirationType: String;
   quantity: number;
+  id: string;
 }
 
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
+  console.log(props.id);
 
   // TODO
   // Function for handling what to do when the user clicks on the edit button
