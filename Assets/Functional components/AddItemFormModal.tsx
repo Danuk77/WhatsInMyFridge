@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useCallback, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AddItemForm } from './AddItemForm';
 import { addItemToKitchen, getUserData } from '../../Utils/endpoints';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,13 +62,26 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
                 <AddItemForm
                     style={styles.box}
                     onSubmit={async (item) => {
+                        var response;
                         try{
-                            const response = await addItemToKitchen(userName, kitchenMode, item);
-                            dispatch(addNewFoodItem(kitchenMode, item));
+                            response = await addItemToKitchen(userName, kitchenMode, item);
                         }catch(err){
-                            console.log(err);
+                            Alert.alert('Failed to add item', "Please try again later", [
+                                { text: 'OK'},
+                            ]);
+                            console.error(err);
+                            return;
                         }
-                        
+
+                        if (!response.ok) {
+                            Alert.alert('Failed to add item', "Please try again later", [
+                                { text: 'OK' },
+                            ]);
+                            console.error(response);
+                            return;
+                        }
+
+                        dispatch(addNewFoodItem(kitchenMode, item));
                         props.onClose();
                     }}
                 />
