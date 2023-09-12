@@ -107,8 +107,17 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
                 color:'white',
                 paddingEnd:'5%'
               }}>
-                {daysLeft > 0 ? `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${daysLeft} days left)` : 
-                `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${-daysLeft} days ago)`}
+                {daysLeft > 0 ? `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}` : 
+                `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}`}
+              </Text>
+              <Text
+              style={{
+                fontSize:11,
+                color:'white',
+                paddingEnd:'5%'
+              }}>
+                {daysLeft > 0 ? `(${daysLeft} days left)` : 
+                `(${-daysLeft} days ago)`}
               </Text>
 
             </View>
