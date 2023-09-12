@@ -6,15 +6,13 @@ import { useState } from 'react';
 import moment from 'moment';
 
 type CalendarModalProps = {
-    date: Date, 
+    date: Date | undefined, 
     visible: boolean | undefined; 
     onConfirm: ((event: GestureResponderEvent) => void) | undefined; 
     onDateChange: (arg0: Date) => void | undefined; 
 }
 
 export function CalendarModal(props: CalendarModalProps): React.JSX.Element {
-
-    const [selectedDate, setSelectedDate] = useState<string|undefined>(undefined);
 
     var markedDates = Object();
     // create the markedDates prop argument for the calendar
@@ -45,7 +43,6 @@ export function CalendarModal(props: CalendarModalProps): React.JSX.Element {
                                 console.log("change date")
                                 props.onDateChange(new Date(day.dateString))
                             }
-                            setSelectedDate(day.dateString);
                         }}
                         markedDates={markedDates}
                     />

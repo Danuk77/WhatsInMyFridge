@@ -13,6 +13,7 @@ import {
     Modal,
     Button,
     ViewStyle,
+    Keyboard,
 
 } from 'react-native';
 
@@ -27,7 +28,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 // import moment from "moment";
 import {DateTime} from "luxon";
 import { getUserLocale } from 'get-user-locale';
-import { parse } from 'date-fns';
+import { parse, setDate } from 'date-fns';
 import moment from "moment";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { DateSelectorBox } from './DateSelectorBox';
@@ -97,7 +98,7 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
     // hooks.
     const [category, setCategory] = useState<FoodCategory>(FoodCategory.Fruit);
     const [name, setName]= useState<string>();
-    const [quantity, setQuantity] = useState<String>("1");
+    const [quantity, setQuantity] = useState<string>("1");
     function handleQuantityChange(newQuantity: string) : void {
         // remove non digit chars
         var clean = newQuantity.replace(/[^0-9]/g, '');
@@ -109,10 +110,70 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
     }
     const [expirationType, setExpirationType] = useState<ExpirationType>(ExpirationType.UseBy);
     const [expirationTypeOpen, setExpirationTypeOpen] = useState<boolean>(false);
-    const [expirationDate, setExpirationDate] = useState<Date>(new Date())
+    const [expirationDate, setExpirationDate] = useState<Date | undefined>(undefined)
     const [dateAdded, setDateAdded] = useState<Date>(new Date(Date.now()))
 
+    // keep track of whether the text in the date entry boxes are valid
+    const [expirationDateValid, setExpirationDateValid] = useState<boolean>(false);
+    const [dateAddedValid, setDateAddedValid] = useState<boolean>(true);
+
+    const [titleErr, setTitleErr] = useState<string | undefined>(undefined);
+    const [quantityErr, setQuantityErr] = useState<string | undefined>(undefined);
+    const [expirationDateErr, setExpirationDateErr] = useState<string | undefined>(undefined);
+    const [dateAddedErr, setDateAddedErr] = useState<string | undefined>(undefined);
+
+
     const iconToRender = foodImages.get(category);
+
+    function handleSubmit() {
+        // blurs all text entry boxes
+        // because there are some listenens on the date entry boxes that use onBlur() to format the date
+        Keyboard.dismiss();
+
+        // check everything is valid
+        var valid = true;
+        if (name == "" || name === undefined){
+            valid = false;
+            setTitleErr("Please enter a title")
+        } else {
+            setTitleErr(undefined);
+        }
+        
+        const quantityInt = parseInt(quantity);
+        if (!Number.isInteger(quantityInt) || quantityInt < 1) {
+            valid = false;
+            setQuantityErr("Please enter a quantity > 0")
+        } else {
+            setQuantityErr(undefined);
+        }
+
+        if (!expirationDateValid) {
+            valid = false;
+            setExpirationDateErr("Please enter a valid date")
+        } else {
+            setExpirationDateErr(undefined)
+        }
+
+        if (!dateAddedValid) {
+            valid = false;
+            setDateAddedErr("Please enter a valid date")
+        } else {
+            setDateAddedErr(undefined)
+        }
+
+
+        if (!valid) return;
+
+
+
+        props.onSubmit({
+            name: name,
+            type: foodCategoryNames.get(category) as string,
+            expirationDate: moment(expirationDate).format("YYYY-MM-DD"),
+            startDate: moment(dateAdded).format("YYYY-MM-DD")
+        } as foodItem);
+
+    }
 
     return (
         <View style={[props.style, styles.foodItem]}>
@@ -132,6 +193,15 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                 {/* The content inside the food item entry */}
                 <View style={[styles.foodItemContent, { flex: 3 }]}>
                     <Text style={styles.fieldTitle}>Product Title & Quantity</Text>
+                    {/* error messages */}
+                    <View style={{
+                        flexDirection:"row", 
+                        display:(titleErr===undefined&&quantityErr===undefined) ? "none" : "flex"
+                    }}>
+                        <Text style={[styles.errMsg, {textAlign:'left'}]}>{titleErr}</Text>
+                        <Text style={[styles.errMsg, { textAlign: 'right' }]}>{quantityErr}</Text>
+                    </View>
+                    {/* input boxes */}
                     <View style={{ flexDirection: 'row' }}>
                         <TextInput
                             style={[styles.inputBox, { flex: 3, marginRight: 5 }]}
@@ -148,7 +218,14 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                     </View>
                     {/* expiration date line */}
                     <Text style={styles.fieldTitle}>Expiration Date</Text>
-                    {expirationTypeNames.values()}
+                    {/* error messages */}
+                    <View style={{
+                        flexDirection: "row",
+                        display: (expirationDateErr === undefined) ? "none" : "flex"
+                    }}>
+                        <Text style={[styles.errMsg, { textAlign: 'right' }]}>{expirationDateErr}</Text>
+                    </View>
+                    {/* entry boxes */}
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ flex: 2, marginRight: 5 }}>
                             <DropDownPicker
@@ -166,18 +243,28 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                         <DateSelectorBox
                             style={[styles.inputBox, { flex: 3 }]}
                             iconStyle={styles.icon}
-                            onDateChange={setExpirationDate}
+                            onDateChange={(date) => {setExpirationDate(date); setExpirationDateValid(true)}}
                             date={expirationDate}
+                            onInvalidEntry={() => setExpirationDateValid(false)}
                         />
 
                     </View>
+                    {/* date added */}
                     <Text style={styles.fieldTitle}>Date Added</Text>
-
+                    {/* error messages */}
+                    <View style={{
+                        flexDirection: "row",
+                        display: (dateAddedErr === undefined) ? "none" : "flex"
+                    }}>
+                        <Text style={[styles.errMsg, { textAlign: 'left' }]}>{dateAddedErr}</Text>
+                    </View>
+                    {/* entry boxes */}
                     <DateSelectorBox
                         style={styles.inputBox}
                         iconStyle={styles.icon}
-                        onDateChange={setDateAdded}
+                        onDateChange={(date) => {setDateAdded(date); setDateAddedValid(true);}}
                         date={dateAdded}
+                        onInvalidEntry={() => setDateAddedValid(false)}
                     />
 
                 </View>
@@ -185,7 +272,8 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
 
             <TouchableOpacity 
                 style={styles.button} 
-                onPress={() => props.onSubmit({name: name, type:foodCategoryNames.get(category) as string, expirationDate:moment(expirationDate).format("YYYY-MM-DD"), startDate:moment(dateAdded).format("YYYY-MM-DD")} as foodItem)}
+                onPress={handleSubmit}
+
             >
                 <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
@@ -204,6 +292,8 @@ const styles = StyleSheet.create({
         width:"80%",
         marginTop: 22,
     },
+
+
 
     itemImage: {
         paddingLeft: 5,
@@ -236,8 +326,15 @@ const styles = StyleSheet.create({
     fieldTitle: {
         color: colors.white,
         fontFamily: fonts.primary,
-        fontSize:14,
-        marginBottom:8
+        fontSize: 14,
+        marginBottom: 8
+    },
+    errMsg: {
+        color: colors.error_red,
+        fontFamily: fonts.primary,
+        fontSize: 14,
+        marginBottom: 8,
+        flexGrow:1
     },
     inputBox: {
         backgroundColor:colors.white,

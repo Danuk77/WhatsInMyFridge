@@ -8,6 +8,8 @@ export default {
     white: "#ffffff",
     gray: "#818181",
 
+    error_red:"#F00",
+
     fridgy_red: "#FF6363",
     freezer_blue: "#82CDF8",
     toasty_brown:"#F8BA82"

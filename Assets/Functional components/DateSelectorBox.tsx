@@ -11,14 +11,30 @@ import { CalendarModal } from "./CalendarModal";
 type DateSelectorBoxProps = {
     style: ViewStyle | ViewStyle[];
     iconStyle: FontAwesomeIconStyle;
-    date: Date;
+    date: Date | undefined;
     onDateChange: (arg0: Date) => void; 
+    onInvalidEntry: () => void;
+}
+
+function formatDate(date: Date, locale: string) {
+    const m = moment(date);
+    m.locale(locale);
+    return m.format("L");
 }
 
 export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element {
 
     const userLocale = getUserLocale();
-    const [dateString, setDateString] = useState<string>("");
+    // set default value of datestring depending on if the date is defined.
+    // todo check that this isn't getting called unnecessarily
+    const [dateString, setDateString] = useState<string>((() => {
+        if (props.date === undefined) {
+            return "";
+        } else {
+            return formatDate(props.date, userLocale);
+        }
+    })());
+
     const [calendarOpen, setCalendarOpen] = useState<boolean>(false);
 
     const now = moment(Date.now());
@@ -30,6 +46,7 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
         const m = moment(dateString, "L", userLocale);
         if (!m.isValid()) {
             console.log("The date is invalid!")
+            props.onInvalidEntry()
             return;
         }
         console.log(m)
