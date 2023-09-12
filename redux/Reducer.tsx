@@ -14,7 +14,8 @@ const initialState = {
     showFruits: true,
     showVegetables: true,
     showMeats: true,
-    sortMode: 0
+    sortMode: 0,
+    showAddItemOptions: false
 }
 
 export default function reducer(state=initialState, action:any){
@@ -95,6 +96,11 @@ export default function reducer(state=initialState, action:any){
             return{
                 ...state,
                 userName: action.payload.value
+            }
+        case 'addItemsOptionsList':
+            return{
+                ...state,
+                showAddItemOptions : !state.showAddItemOptions
             }
         default:
             return state

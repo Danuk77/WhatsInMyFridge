@@ -56,8 +56,7 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
             <Pressable
                 style={{ position: 'absolute', height: "100%", width: "100%" }}
                 onPressOut={props.onClose}
-            >
-            </Pressable>
+            />
             <View style={styles.boxView}>
                 <AddItemForm
                     style={styles.box}

@@ -6,9 +6,7 @@ import {
   Text,
   View,
   Image,
-  Dimensions,
   TouchableOpacity,
-  ProgressBarAndroidComponent
 
 } from 'react-native';
 
@@ -48,9 +46,16 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
   const daysLeft = Math.floor((props.expirationDate.getTime() - exp.getTime())/ (1000 * 60 * 60 * 24));
 
   const duration = (props.expirationDate.getTime() - props.startDate.getTime());
-  const current = ((new Date()).getTime() - props.startDate.getTime());
+  
+  var progress:number;
+  var current:number;
 
-  const progress:number = parseFloat(((current/duration) * 100).toFixed());
+  if(duration < 0 || daysLeft < 0) {
+    progress = 100;
+  }else{
+    current = ((new Date()).getTime() - props.startDate.getTime());
+    progress = parseFloat(((current/duration) * 100).toFixed());
+  }
   
   return (
     <View style={[styles.foodItem, 
@@ -102,7 +107,8 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
                 color:'white',
                 paddingEnd:'5%'
               }}>
-                {`${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${daysLeft} days)`}
+                {daysLeft > 0 ? `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${daysLeft} days left)` : 
+                `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()} (${-daysLeft} days ago)`}
               </Text>
 
             </View>
