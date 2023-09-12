@@ -6,7 +6,7 @@ export type foodItem = {
     startDate:String, 
     quantity: number, 
     expirationType:String,
-    _id: string
+    id: string
 }
 
 export type userData = {

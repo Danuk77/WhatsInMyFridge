@@ -47,7 +47,7 @@ function KitchenItem(props:any): JSX.Element {
         <View style= {{alignItems:'center'}}>
 
             {sorted.map((item:foodItem, index:number) => (
-            <FoodItem key={`${props.location}(${index})`} id={item._id} location={props.location} name={item.name} type={item.type} expirationDate={new Date(`${item.expirationDate}`)} startDate={new Date(`${item.startDate}`)} expirationType={item.expirationType} quantity={item.quantity}/>
+            <FoodItem key={`${props.location}(${index})`} id={item.id} location={props.location} name={item.name} type={item.type} expirationDate={new Date(`${item.expirationDate}`)} startDate={new Date(`${item.startDate}`)} expirationType={item.expirationType} quantity={item.quantity}/>
             ))}
 
         </View>
