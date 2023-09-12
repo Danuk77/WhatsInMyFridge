@@ -36,7 +36,7 @@ export const Tabs : React.FC<MainScreenProps> = (props) => {
     const fetchUserdata = async () => {
         try{
         // CHange this for production
-        const response = await axios.get("http://127.0.0.1:8000/userInfo/test");
+        const response = await axios.get("http://127.0.0.1:8000/userInfo/newTest");
         const userData:userData = {
             name: response.data.body.User,
             fridge: response.data.body.Fridge,

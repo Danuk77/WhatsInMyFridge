@@ -12,13 +12,14 @@ import {
 // Filters
 import FiltersKitchen from './FiltersKitchen';
 
-import { showAddItemForm, showFilters } from '../../redux/Actions';
+import { showAddItemForm, showAddItemOptionsList, showFilters } from '../../redux/Actions';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 
 import KitchenItem from './KitchenItem';
 import { AddItemFormModal } from '../Functional components/AddItemFormModal';
+import { NewItemMenu } from '../Functional components/NewItemMenu';
 
 
 function Kitchen(): JSX.Element {
@@ -31,6 +32,9 @@ function Kitchen(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      <NewItemMenu
+        onClose={() => dispatch(showAddItemOptionsList())}
+        visible={useSelector((state: any) => state.showAddItemOptions)}/>
       <FiltersKitchen/>
       <AddItemFormModal
         onClose={() => dispatch(showAddItemForm())}

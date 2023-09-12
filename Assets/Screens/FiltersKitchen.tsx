@@ -5,11 +5,10 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Button,
   Modal,
   TouchableOpacity,
   Text,
-  TouchableHighlight
+  Pressable
 } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -35,46 +34,57 @@ function FiltersKitchen(): JSX.Element {
     const sortMethods = ["Added date", "Expiring soon", "Expiring late"];
 
     return (
-    <Modal
-    animationType="slide"
-    transparent={true}
-    visible={useSelector((state:any) => state.showFilters)}
-    >
-        <View style={styles.container}>
-            <View style={styles.outerBox}>
+        <>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={useSelector((state:any) => state.showFilters)}
+                onRequestClose={() => dispatch(showFilters())}
+            >
+                <View style={{width:'100%', height:'100%', backgroundColor:'black', opacity:0.8}}/>
+            </Modal>
+            <Modal
+            animationType="slide"
+            transparent={true}
+            visible={useSelector((state:any) => state.showFilters)}
+            >
+                <Pressable style={{position: 'absolute', width:'100%', height:'100%'}} onPress={() => dispatch(showFilters())}/>
+                <View style={styles.container}>
+                    <View style={styles.outerBox}>
 
-                <View style={{flex:1, flexDirection:'row', width: '100%'}}>
-                    <Text style={styles.title}>Filters</Text>
-                    <View style={styles.close}>
-                        <TouchableOpacity onPress={() => {dispatch(showFilters())}}>
-                            <FontAwesomeIcon icon={faXmark} size={32} style={{color:'white'}} />
-                        </TouchableOpacity>
+                        <View style={{flex:1, flexDirection:'row', width: '100%'}}>
+                            <Text style={styles.title}>Filters</Text>
+                            <View style={styles.close}>
+                                <TouchableOpacity onPress={() => {dispatch(showFilters())}}>
+                                    <FontAwesomeIcon icon={faXmark} size={32} style={{color:'white'}} />
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+
+                        <View style={{flex:1, flexDirection:'row', width: '100%'}}>
+                            <Text style={[styles.title, {fontSize: 18}]}>Food Type:</Text>
+                            <View style={{flex:2, flexDirection:'row', justifyContent:'space-evenly', alignItems: 'center', paddingRight: '10%'}}>
+                                <FilterFoodType type="Fruit" shown={fruitsShowing}/>
+                                <FilterFoodType type="Vegetable" shown={vegetablesShowing}/>
+                                <FilterFoodType type="Meat" shown={meatsShowing}/>
+                            </View>
+                        </View>
+
+                        <View style={{flex:2, flexDirection:'row', width: '100%'}}>
+                            <Text style={[styles.title, {fontSize: 18}]}>Sort Items:</Text>
+                            <View style={{flex:2, flexDirection:'row', justifyContent:'center', alignItems: 'center', paddingRight: '10%'}}>
+                                <TouchableOpacity style={{width:'80%', height:'30%', backgroundColor:'white', borderRadius:10, alignItems:'center', justifyContent:'center', padding:'1%'}}
+                                    onPress={() => dispatch(changeSortMode(sortMode, sortMethods.length))}>
+                                    <Text> {sortMethods[sortMode]} </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
                     </View>
-
                 </View>
-
-                <View style={{flex:1, flexDirection:'row', width: '100%'}}>
-                    <Text style={[styles.title, {fontSize: 18}]}>Food Type:</Text>
-                    <View style={{flex:2, flexDirection:'row', justifyContent:'space-evenly', alignItems: 'center', paddingRight: '10%'}}>
-                        <FilterFoodType type="Fruit" shown={fruitsShowing}/>
-                        <FilterFoodType type="Vegetable" shown={vegetablesShowing}/>
-                        <FilterFoodType type="Meat" shown={meatsShowing}/>
-                    </View>
-                </View>
-
-                <View style={{flex:2, flexDirection:'row', width: '100%'}}>
-                    <Text style={[styles.title, {fontSize: 18}]}>Sort Items:</Text>
-                    <View style={{flex:2, flexDirection:'row', justifyContent:'center', alignItems: 'center', paddingRight: '10%'}}>
-                        <TouchableOpacity style={{width:'80%', height:'30%', backgroundColor:'white', borderRadius:10, alignItems:'center', justifyContent:'center', padding:'1%'}}
-                            onPress={() => dispatch(changeSortMode(sortMode, sortMethods.length))}>
-                            <Text> {sortMethods[sortMode]} </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-            </View>
-        </View>
-    </Modal>
+            </Modal>
+        </>
   );
 }
 

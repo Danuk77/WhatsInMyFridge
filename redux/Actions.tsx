@@ -79,3 +79,13 @@ export const addNewFoodItem = (location: string, foodItem:foodItem) => {
         }
     };
 }
+
+/**
+ * Action dispatched when showing the list of options the user can add a new item with
+ * @returns void
+ */
+export const showAddItemOptionsList = () => {
+    return{
+        type: 'addItemsOptionsList'
+    }
+}

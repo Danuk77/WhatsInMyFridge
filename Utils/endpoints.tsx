@@ -24,21 +24,17 @@ export async function getUserData(userName: string){
 }
 
 export async function addItemToKitchen(userName: string, kitchenMode: string, item: foodItem) {
+    // Derefence the id and only send the rest of the body
+    const  {id, ...body} = item;
     const response = await fetch(`${backend.url}/userItems/${userName}/${kitchenMode}`, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(body)
     });
     return response;
-    
-        // .then((respose) => respose.json())
-        // .then((responseData) => {
-        //     console.log(JSON.stringify(responseData));
-
-        // });
 }
 
 
