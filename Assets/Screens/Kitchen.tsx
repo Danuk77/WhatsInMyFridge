@@ -18,9 +18,9 @@ import { hideItemDropdown, showAddItemForm, showAddItemOptionsList, showFilters 
 import { useSelector, useDispatch } from 'react-redux';
 
 import KitchenItem from './KitchenItem';
-import { AddItemFormModal } from '../Functional components/AddItemFormModal';
-import { NewItemMenu } from '../Functional components/NewItemMenu';
-import ItemOptions from '../Functional components/ItemOptions';
+import { AddItemFormModal } from '../functionalComponents/AddItemFormModal';
+import { NewItemMenu } from '../functionalComponents/NewItemMenu';
+import ItemOptions from '../functionalComponents/ItemOptions';
 
 
 function Kitchen(): JSX.Element {

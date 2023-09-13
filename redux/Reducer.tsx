@@ -126,6 +126,28 @@ export default function reducer(state=initialState, action:any){
                     visible: false
                 } as ItemDropdownSettings
             }
+        case "removeItem":
+            switch (action.payload.storageLocation as StorageLocation) {
+                case "Fridge":
+                    return {
+                        ...state,
+                        Fridge: state.Fridge.filter((x) => x.id != action.payload.id)
+                    }
+                case "Freezer":
+                    return {
+                        ...state,
+                        Freezer: state.Freezer.filter((x) => x.id != action.payload.id)
+                    }
+                case "Shelf":
+                    return {
+                        ...state,
+                        Shelf: state.Shelf.filter((x) => x.id != action.payload.id)
+                    }
+                default:
+                    console.error(`Storage location ${action.payload.storageLocation} not implemented`);
+                    return state
+            }
+
         default:
             return state
     }

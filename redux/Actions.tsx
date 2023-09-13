@@ -112,9 +112,24 @@ export const showItemDropdown = (
 })
 
 /**
- * Hide the item dropdown, keeping its settings intact.
+ * Hide the item dropdown, keeping its other settings intact.
  * @returns 
  */
 export const hideItemDropdown = () => ({
     type: "hideItemDropdown",
+})
+
+/**
+ * Remove foodItem with specified id from specified location
+ * @param storageLocation Fridge/Freezer etc
+ * @param id
+ * @returns 
+ */
+export const removeItem = (/*userName: string,*/ storageLocation: StorageLocation, id:string) => ({
+    type: "removeItem",
+    payload: {
+        // userName: userName,
+        storageLocation: storageLocation,
+        id:id
+    }
 })

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import ItemOptions from "../Functional components/ItemOptions";
+import ItemOptions from "../functionalComponents/ItemOptions";
 import { Button, DimensionValue, Touchable, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import colors from "../../config/colors";
 import { useRef, useState } from "react";

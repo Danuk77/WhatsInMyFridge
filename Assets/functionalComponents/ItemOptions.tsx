@@ -3,6 +3,10 @@ import {FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, Vi
 import colors from "../../config/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import fonts from "../../config/fonts";
+import { removeItem as removeItemBackend} from "../../Utils/endpoints";
+import { removeItem as removeItemRedux } from "../../redux/Actions";
+import { useSelector } from "react-redux";
+import { DropdownSettings } from "../../config/type";
 
 
 const iconDict = new Map<string, [IconDefinition, string]>([
@@ -20,6 +24,34 @@ type ItemOptionsProps = {
 }
 
 export default function ItemOptions(props: ItemOptionsProps) {
+
+    const userName = useSelector((state: any) => state.userName) as string;
+    const { itemID, itemLocation } = useSelector((state: any) => state.itemDropdownSettings);
+
+    function edit() {
+
+    }
+
+    async function remove() {
+
+
+        // backend
+        let response: Response;
+        try {
+            response = await removeItemBackend(userName, itemLocation, itemID);
+        } catch (err) {
+            console.error(err);
+            return;
+        }
+        if (!response.ok) {
+            console.error(response);
+            return;
+        }
+
+        // frontend
+        removeItemRedux(itemLocation, itemID);
+        console.log("deleted")
+    }
 
     function moveTo(location: string) {
         console.log("Move to " + location)
@@ -47,13 +79,13 @@ export default function ItemOptions(props: ItemOptionsProps) {
                         text: "Edit Details",
                         icon: faPen,
                         iconColor: colors.white,
-                        onPress: () => { console.log("Edit Details") }
+                        onPress: edit
                     },
                     {
                         text: "Remove",
                         icon: faTrash,
                         iconColor: colors.white,
-                        onPress: () => { console.log("Remove") }
+                        onPress: remove
                     }
                 ]
                     // "move to" options - exclude the location it's already in

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios";
 import backend from "../config/backend";
-import { foodItem, userData } from '../config/type';
+import { StorageLocation, foodItem, userData } from '../config/type';
 
 
 
@@ -35,6 +35,13 @@ export async function addItemToKitchen(userName: string, kitchenMode: string, it
         body: JSON.stringify(body)
     });
     return response;
+}
+
+export async function removeItem(userName: string, storageLocation: StorageLocation, id: string) {
+    const response = await fetch(`${backend.url}/userItems/${userName}/${storageLocation}/${id}`, {
+        method: "DELETE",
+    })
+    return response; 
 }
 
 
