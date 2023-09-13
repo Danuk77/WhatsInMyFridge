@@ -12,10 +12,11 @@ const iconDict = new Map<string, [IconDefinition, string]>([
 ]);
 
 type ItemOptionsProps = {
-    storageLocation: string;
+    storageLocation?: string;
     visible: boolean;
     onClose: () => void;
     style?: ViewStyle;
+    id?: string,
 }
 
 export default function ItemOptions(props: ItemOptionsProps) {
@@ -87,16 +88,18 @@ export default function ItemOptions(props: ItemOptionsProps) {
 }
 
 ItemOptions.defaultProps = {
+    storageLocation: undefined,
     style: undefined,
     visible: true,
-    onClose: () => {}
+    onClose: () => {},
+    id: undefined
 }
 
 const styles = StyleSheet.create({
     container: {
         position:"absolute",
         overflow:"hidden",
-        borderRadius:12
+        borderRadius:12,
     },
     item: {
         // width:"100%",

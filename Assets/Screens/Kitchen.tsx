@@ -12,7 +12,7 @@ import {
 // Filters
 import FiltersKitchen from './FiltersKitchen';
 
-import { showAddItemForm, showAddItemOptionsList, showFilters } from '../../redux/Actions';
+import { hideItemDropdown, showAddItemForm, showAddItemOptionsList, showFilters } from '../../redux/Actions';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import KitchenItem from './KitchenItem';
 import { AddItemFormModal } from '../Functional components/AddItemFormModal';
 import { NewItemMenu } from '../Functional components/NewItemMenu';
+import ItemOptions from '../Functional components/ItemOptions';
 
 
 function Kitchen(): JSX.Element {
@@ -39,6 +40,13 @@ function Kitchen(): JSX.Element {
       <AddItemFormModal
         onClose={() => dispatch(showAddItemForm())}
         visible={useSelector((state: any) => state.showAddItemForm)}
+      />
+      <ItemOptions
+        onClose={() => dispatch(hideItemDropdown())}
+        visible={useSelector((state:any) => state.itemDropdownSettings.visible)}
+        style={useSelector((state: any) => state.itemDropdownSettings.position)}
+        id={useSelector((state: any) => state.itemDropdownSettings.itemID)}
+        storageLocation={useSelector((state: any) => state.itemDropdownSettings.itemLocation)}
       />
       <KitchenItem items={internalContent} location={mode}/>
       {/* <RenderComponent key ={mode} items={internalContent}/> */}

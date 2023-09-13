@@ -1,3 +1,5 @@
+import { DimensionValue } from "react-native";
+
 /* eslint-disable */
 export type foodItem = {
     name:String, 
@@ -9,10 +11,24 @@ export type foodItem = {
     id: string
 }
 
+export type StorageLocation = "Fridge" | "Freezer" | "Shelf";
+
 export type userData = {
     name:string,
     fridge: foodItem[],
     freezer: foodItem[],
     shelf: foodItem[],
     ShoppingList: []
+}
+
+export type DropdownSettings = {
+    visible: boolean,
+    position?: {
+        top?: DimensionValue,
+        bottom?: DimensionValue,
+        left?: DimensionValue,
+        right?: DimensionValue
+    },
+    itemID?: string,
+    itemLocation?: StorageLocation
 }
