@@ -1,13 +1,15 @@
 /* eslint-disable */
 
+import { DimensionValue } from "react-native"
 import { createStoreHook } from "react-redux"
+import { DropdownSettings as ItemDropdownSettings, StorageLocation, foodItem } from "../config/type"
 
 const initialState = {
     kitchenMode: 'Fridge',
     userName: '',
-    Fridge: [],
-    Freezer: [],
-    Shelf: [],
+    Fridge: [] as foodItem[],
+    Freezer: [] as foodItem[],
+    Shelf: [] as foodItem[],
     ShoppingList: [],
     showFilters: false,
     showAddItemForm: false,
@@ -15,7 +17,11 @@ const initialState = {
     showVegetables: true,
     showMeats: true,
     sortMode: 0,
-    showAddItemOptions: false
+    showAddItemOptions: false,
+
+    itemDropdownSettings: {
+        visible: false,
+    } as ItemDropdownSettings
 }
 
 export default function reducer(state=initialState, action:any){
@@ -102,6 +108,46 @@ export default function reducer(state=initialState, action:any){
                 ...state,
                 showAddItemOptions : !state.showAddItemOptions
             }
+        case "showItemDropdown":
+            return {
+                ...state,
+                itemDropdownSettings:{
+                    visible: true,
+                    itemID: action.payload.itemID,
+                    itemLocation: action.payload.itemLocation,
+                    position: action.payload.position
+                } as ItemDropdownSettings
+            }
+        case "hideItemDropdown":
+            return {
+                ...state,
+                itemDropdownSettings: {
+                    ...state.itemDropdownSettings,
+                    visible: false
+                } as ItemDropdownSettings
+            }
+        case "removeItem":
+            switch (action.payload.storageLocation as StorageLocation) {
+                case "Fridge":
+                    return {
+                        ...state,
+                        Fridge: state.Fridge.filter((x) => x.id != action.payload.id)
+                    }
+                case "Freezer":
+                    return {
+                        ...state,
+                        Freezer: state.Freezer.filter((x) => x.id != action.payload.id)
+                    }
+                case "Shelf":
+                    return {
+                        ...state,
+                        Shelf: state.Shelf.filter((x) => x.id != action.payload.id)
+                    }
+                default:
+                    console.error(`Storage location ${action.payload.storageLocation} not implemented`);
+                    return state
+            }
+
         default:
             return state
     }

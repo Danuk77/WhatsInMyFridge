@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { foodItem, userData } from "../config/type"
+import { DimensionValue } from "react-native"
+import { DropdownSettings, StorageLocation, foodItem, userData } from "../config/type"
 
 // Action used for handling changes between fridge, freezer and shelf
 export const changeKitchenMode = (newMode:String) => {
@@ -89,3 +90,46 @@ export const showAddItemOptionsList = () => {
         type: 'addItemsOptionsList'
     }
 }
+
+/**
+ * Display the item dropdown with the correct settings
+ * @param itemID 
+ * @param itemLocation Fridge / Freezer etc
+ * @param position Style used for positioning the dropdown menu
+ * @returns 
+ */
+export const showItemDropdown = (
+    itemID: string, 
+    itemLocation: StorageLocation, 
+    position: DropdownSettings["position"]
+) => ({
+    type: "showItemDropdown",
+    payload: {
+        itemID: itemID,
+        itemLocation: itemLocation,
+        position: position
+    }
+})
+
+/**
+ * Hide the item dropdown, keeping its other settings intact.
+ * @returns 
+ */
+export const hideItemDropdown = () => ({
+    type: "hideItemDropdown",
+})
+
+/**
+ * Remove foodItem with specified id from specified location
+ * @param storageLocation Fridge/Freezer etc
+ * @param id
+ * @returns 
+ */
+export const removeItem = (/*userName: string,*/ storageLocation: StorageLocation, id:string) => ({
+    type: "removeItem",
+    payload: {
+        // userName: userName,
+        storageLocation: storageLocation,
+        id:id
+    }
+})

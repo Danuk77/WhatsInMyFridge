@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 // Import the custom components
-import { FoodItem } from '../Functional components/FoodItem';
+import { FoodItem } from '../functionalComponents/FoodItem';
 import { useSelector } from 'react-redux';
 
 function KitchenItem(props:any): JSX.Element {
