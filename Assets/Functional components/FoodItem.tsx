@@ -29,8 +29,6 @@ type foodItemProps = {
 
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
-
-  console.log(props.id);
   // TODO
   // Function for handling what to do when the user clicks on the edit button
   const handleEdit = useCallback(() => {
@@ -44,28 +42,41 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     ["Meat", require("../imageAssets/Meats.png")]
   ]);
 
-  // Expiration date of the food item
-  const exp : Date = new Date();
-  const daysLeft = Math.floor((props.expirationDate.getTime() - exp.getTime())/ (1000 * 60 * 60 * 24));
+  // Function for calculating the progress of the food item
+  const calculateProgress = (start:number, end:number) : {progress:number, daysLeft:number, expired:boolean} => {
+    // Today's date
+    const curDate:number = (new Date()).getTime();
 
-  const duration = (props.expirationDate.getTime() - props.startDate.getTime());
-  
-  var progress:number;
-  var current:number;
+    var expired:boolean = false;
+    var daysLeft: number = 0;
+    var progress: number = 0;
 
-  if(duration < 0 || daysLeft < 0) {
-    progress = 100;
-  }else{
-    current = ((new Date()).getTime() - props.startDate.getTime());
-    progress = parseFloat(((current/duration) * 100).toFixed());
+    // Check if item is expired
+    if(curDate > end){
+      expired = true;
+      progress = 100;
+    }else{ 
+      if(curDate > start){
+        const duration = end - start;
+        progress = parseFloat(((curDate - start) / duration * 100).toFixed());
+      }
+    }
+
+    // Calculate the number of days (left from/since) expiration
+    daysLeft = Math.floor((end - curDate)/ (1000 * 60 * 60 * 24));
+
+    return {
+      progress: progress,
+      daysLeft:daysLeft,
+      expired: expired
+    }
   }
+
+  // Calculate the state of the food item
+  const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
   
   return (
-    <View style={[styles.foodItem, 
-              props.location === "Fridge" ? {backgroundColor:'#2E81FF'} : 
-              props.location === "Freezer" ? {backgroundColor: '#2E81FF'} :
-              {backgroundColor : "#2E81FF"}
-            ]}>
+    <View style={[styles.foodItem, !expired ? {backgroundColor : "#2E81FF"} : {backgroundColor: 'red'}]}>
       {/* Logo of the type of food */}
         <View style={styles.itemImage}>
             <Image 
