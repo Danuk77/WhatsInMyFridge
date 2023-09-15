@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,8 @@ import {
   Dimensions,
   DimensionValue,
   Vibration,
+  Animated,
+  PanResponder
 
 } from 'react-native';
 
@@ -37,9 +39,31 @@ type foodItemProps = {
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
 
-  console.log(props.id);
+  // Sliding gesture
+  const pan = useRef(new Animated.ValueXY()).current
+
+    const panResponder = useRef(
+        PanResponder.create({
+            onMoveShouldSetPanResponder: (evt, gesturestate) => {
+                return gesturestate.dx != 0 && gesturestate.dy != 0;
+            },
+            onPanResponderMove: Animated.event([null, {dx: pan.x}], {useNativeDriver: false}),
+            onPanResponderRelease: () => {
+              if (pan.x._value > -200 && pan.x._value < 200) {
+                  // Reset the value to go back to the start using a spring animation
+                  Animated.spring(pan, {
+                    toValue: { x: 0, y: pan.y._value },
+                    useNativeDriver: true, 
+                  }).start();
+              } else {
+                  console.log("Delete or other thing");
+              }
+            },
+        }),
+      ).current;
+
   const dispatch = useDispatch();
-  // TODO
+
   // Function for handling what to do when the user clicks on the edit button
   const handleEdit = useCallback((event: GestureResponderEvent) => {
 
@@ -78,30 +102,43 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     ["Meat", require("../imageAssets/Meats.png")]
   ]);
 
-  // Expiration date of the food item
-  const exp : Date = new Date();
-  const daysLeft = Math.floor((props.expirationDate.getTime() - exp.getTime())/ (1000 * 60 * 60 * 24));
+  // Function for calculating the progress of the food item
+  const calculateProgress = (start:number, end:number) : {progress:number, daysLeft:number, expired:boolean} => {
+    // Today's date
+    const curDate:number = (new Date()).getTime();
 
-  const duration = (props.expirationDate.getTime() - props.startDate.getTime());
-  
-  var progress:number;
-  var current:number;
+    var expired:boolean = false;
+    var daysLeft: number = 0;
+    var progress: number = 0;
 
-  if(duration < 0 || daysLeft < 0) {
-    progress = 100;
-  }else{
-    current = ((new Date()).getTime() - props.startDate.getTime());
-    progress = parseFloat(((current/duration) * 100).toFixed());
+    // Check if item is expired
+    if(curDate > end){
+      expired = true;
+      progress = 100;
+    }else{ 
+      if(curDate > start){
+        const duration = end - start;
+        progress = parseFloat(((curDate - start) / duration * 100).toFixed());
+      }
+    }
+
+    // Calculate the number of days (left from/since) expiration
+    daysLeft = Math.floor((end - curDate)/ (1000 * 60 * 60 * 24));
+
+    return {
+      progress: progress,
+      daysLeft:daysLeft,
+      expired: expired
+    }
   }
+
+  // Calculate the state of the food item
+  const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
   
   return (
-    <TouchableOpacity onLongPress={handleEdit}>
+    <Animated.View style={{transform:[{translateX: pan.x}]}} {...panResponder.panHandlers}>
 
-      <View style={[styles.foodItem, 
-                props.location === "Fridge" ? {backgroundColor:'#2E81FF'} : 
-                props.location === "Freezer" ? {backgroundColor: '#2E81FF'} :
-                {backgroundColor : "#2E81FF"}
-              ]}>
+      <View style={[styles.foodItem, !expired ? {backgroundColor : "#2E81FF"} : {backgroundColor: '#FF6D6D'}]}>
         {/* Logo of the type of food */}
           <View style={styles.itemImage}>
               <Image 
@@ -155,7 +192,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
                   color:'white',
                   paddingEnd:'5%'
                 }}>
-                  {daysLeft > 0 ? `(${daysLeft} days left)` : 
+                  {daysLeft >= 0 ? `(${daysLeft} days left)` : 
                   `(${-daysLeft} days ago)`}
                 </Text>
 
@@ -171,7 +208,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
 
           </View>
       </View>
-    </TouchableOpacity>
+    </Animated.View>
 
   );
 }
