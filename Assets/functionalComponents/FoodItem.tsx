@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faEllipsisVertical, faAngleUp, faTrash, faTractor } from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
 import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
@@ -38,31 +38,44 @@ type foodItemProps = {
 
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
+  const dispatch = useDispatch();
 
   // Sliding gesture
   const pan = useRef(new Animated.ValueXY()).current
 
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gesturestate) => {
-                return gesturestate.dx != 0 && gesturestate.dy != 0;
-            },
-            onPanResponderMove: Animated.event([null, {dx: pan.x}], {useNativeDriver: false}),
-            onPanResponderRelease: () => {
-              if (pan.x._value > -200 && pan.x._value < 200) {
-                  // Reset the value to go back to the start using a spring animation
-                  Animated.spring(pan, {
-                    toValue: { x: 0, y: pan.y._value },
-                    useNativeDriver: true, 
-                  }).start();
-              } else {
-                  console.log("Delete or other thing");
-              }
-            },
-        }),
-      ).current;
 
-  const dispatch = useDispatch();
+  const panResponder = useRef(
+      PanResponder.create({
+          onMoveShouldSetPanResponder: (evt, gesturestate) => {
+            return gesturestate.dx != 0 && gesturestate.dy != 0;
+          },
+          onPanResponderMove: Animated.event([null, {dx: pan.x}], {useNativeDriver: false}),
+          onPanResponderRelease: () => {
+            // Ignore the itellisense issues
+            if (pan.x._value > -100 && pan.x._value < 100) {
+                // Reset the value to go back to the start using a spring animation
+                Animated.spring(pan, {
+                  toValue: { x: 0, y: pan.y._value },
+                  useNativeDriver: true, 
+                }).start();
+            } else {
+              //If moved to the left
+              if(pan.x._value < 0){
+                Animated.spring(pan, {
+                  toValue: { x: -100, y: pan.y._value },
+                  useNativeDriver: true, 
+                }).start();
+              }else{
+                // If moved to the right
+                Animated.spring(pan, {
+                  toValue: { x: 100, y: pan.y._value },
+                  useNativeDriver: true, 
+                }).start();
+              }
+            }
+          },
+      }),
+    ).current;
 
   // Function for handling what to do when the user clicks on the edit button
   const handleEdit = useCallback((event: GestureResponderEvent) => {
@@ -92,7 +105,6 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     console.log(coords);
 
     dispatch(showItemDropdown(props.id, props.location as StorageLocation, coords))
-    // console.log("Editing");
   }, []);
 
   // Load the images to show as the food item type
@@ -136,79 +148,90 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
   const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
   
   return (
-    <Animated.View style={{transform:[{translateX: pan.x}]}} {...panResponder.panHandlers}>
+      <View style={{flexDirection:'row'}}>
+        <Animated.View style={[styles.foodItem, {zIndex:2 , transform:[{translateX: pan.x}]}, !expired ? {backgroundColor : "#2E81FF"} : {backgroundColor: '#FF6D6D'}]} {...panResponder.panHandlers}>
+          {/* Logo of the type of food */}
+            <View style={styles.itemImage}>
+                <Image 
+                  style={styles.foodImage}
+                  source={foodImages.get(props.type)}
+                />
+            </View>
 
-      <View style={[styles.foodItem, !expired ? {backgroundColor : "#2E81FF"} : {backgroundColor: '#FF6D6D'}]}>
-        {/* Logo of the type of food */}
-          <View style={styles.itemImage}>
-              <Image 
-                style={styles.foodImage}
-                source={foodImages.get(props.type)}
-              />
-          </View>
+            {/* The content inside the food item entry */}
+            <View style={styles.foodItemContent}>
 
-          {/* The content inside the food item entry */}
-          <View style={styles.foodItemContent}>
+                <View style={{flexDirection:'row',
+                              flex:1,
+                              justifyContent:'space-between'}}>
 
-              <View style={{flexDirection:'row',
-                            flex:1,
-                            justifyContent:'space-between'}}>
+                  <Text
+                  style={{
+                    fontSize:20,
+                    color:'white',
+                  }}>
+                    {`${props.name} (${props.quantity})`}
+                  </Text>
 
-                <Text
-                style={{
-                  fontSize:20,
-                  color:'white',
+                  {/* Edit button click */}
+                  <TouchableOpacity
+                    onPress={handleEdit}>
+                    <FontAwesomeIcon icon={faEllipsisVertical} size={20} style={{color:colors.white, marginRight: '5%', marginTop:5}} />
+                  </TouchableOpacity>
+
+
+                </View>
+
+                {/* Expiration date informaiton */}
+                <View style={{
+                  flex:1,
+                  justifyContent:'flex-end',
+                  alignItems:'flex-end',
                 }}>
-                  {`${props.name} (${props.quantity})`}
-                </Text>
+                  <Text
+                  style={{
+                    fontSize:13,
+                    color:'white',
+                    paddingEnd:'5%'
+                  }}>
+                    {daysLeft > 0 ? `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}` : 
+                    `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}`}
+                  </Text>
+                  <Text
+                  style={{
+                    fontSize:11,
+                    color:'white',
+                    paddingEnd:'5%'
+                  }}>
+                    {daysLeft >= 0 ? `(${daysLeft} days left)` : 
+                    `(${-daysLeft} days ago)`}
+                  </Text>
 
-                {/* Edit button click */}
-                <TouchableOpacity
-                  onPress={handleEdit}>
-                  <FontAwesomeIcon icon={faEllipsisVertical} size={20} style={{color:colors.white, marginRight: '5%', marginTop:5}} />
-                </TouchableOpacity>
+                </View>
 
-                
-              </View>
-
-              {/* Expiration date informaiton */}
-              <View style={{
-                flex:1,
-                justifyContent:'flex-end',
-                alignItems:'flex-end',
-              }}>
-                <Text
-                style={{
-                  fontSize:13,
-                  color:'white',
-                  paddingEnd:'5%'
+                {/* Progress bar for expiration */}
+                <View style={{
+                  flex:1,
+                  justifyContent:'center'
                 }}>
-                  {daysLeft > 0 ? `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}` : 
-                  `${props.expirationType}: ${props.expirationDate.getDate()}/${props.expirationDate.getMonth() + 1}/${props.expirationDate.getFullYear()}`}
-                </Text>
-                <Text
-                style={{
-                  fontSize:11,
-                  color:'white',
-                  paddingEnd:'5%'
-                }}>
-                  {daysLeft >= 0 ? `(${daysLeft} days left)` : 
-                  `(${-daysLeft} days ago)`}
-                </Text>
+                  <ProgressBar progress={progress}/>
+                </View>
 
-              </View>
+            </View>
+        </Animated.View>
 
-              {/* Progress bar for expiration */}
-              <View style={{
-                flex:1,
-                justifyContent:'center'
-              }}>
-                <ProgressBar progress={progress}/>
-              </View>
+        <Animated.View style={[styles.gestureOption, {left:'5%'}, {opacity:pan.x.interpolate({inputRange:[0, 100], outputRange:[0,1], extrapolate:'clamp'})}]}>
+          <TouchableOpacity>
+              <FontAwesomeIcon icon={faTrash} size={25} color='red'/>
+          </TouchableOpacity>
+        </Animated.View>
 
-          </View>
+        <Animated.View style={[styles.gestureOption, {right:'5%'}, {opacity:(pan.x).interpolate({inputRange:[-100, 0], outputRange:[1,0], extrapolate:'clamp'})}]}>
+          <TouchableOpacity>
+              <FontAwesomeIcon icon={faTractor} size={25}/>
+          </TouchableOpacity>
+        </Animated.View>
       </View>
-    </Animated.View>
 
   );
 }
@@ -237,6 +260,13 @@ const styles = StyleSheet.create({
     paddingEnd:10,
     paddingTop: 10,
     overflow:'visible'
+  },
+  gestureOption:{
+    position:'absolute',
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center', 
+    zIndex: 1, 
   }
 })
 

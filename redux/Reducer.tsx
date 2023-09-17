@@ -21,7 +21,7 @@ const initialState = {
 
     itemDropdownSettings: {
         visible: false,
-    } as ItemDropdownSettings
+    } as ItemDropdownSettings,
 }
 
 export default function reducer(state=initialState, action:any){

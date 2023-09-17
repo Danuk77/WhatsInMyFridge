@@ -1,6 +1,5 @@
-import { DimensionValue } from "react-native";
-
 /* eslint-disable */
+import { DimensionValue } from "react-native";
 export type foodItem = {
     name:String, 
     type:String, 
