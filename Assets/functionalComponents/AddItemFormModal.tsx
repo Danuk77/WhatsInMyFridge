@@ -9,6 +9,7 @@ import colors from '../../config/colors';
 import fonts from '../../config/fonts';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faToiletPortable, faSnowflake, faBreadSlice, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { addItemToKitchenAll } from '../../Utils/changeAllCopies';
 
 type AddItemFormModalProps = {
     visible: boolean | undefined;
@@ -61,32 +62,10 @@ export function AddItemFormModal(props: AddItemFormModalProps): React.JSX.Elemen
                 <AddItemForm
                     style={styles.box}
                     onSubmit={async (item) => {
-                        var response;
-                        var newID:string;
-                        try{
-                            response = await addItemToKitchen(userName, kitchenMode, item);
-                            newID = JSON.parse(await response.text()).id;
-                            
-                        }catch(err){
-                            Alert.alert('Failed to add item', "Please try again later", [
-                                { text: 'OK'},
-                            ]);
-                            console.error(err);
-                            return;
-                        }
-
-                        if (!response.ok) {
-                            Alert.alert('Failed to add item', "Please try again later", [
-                                { text: 'OK' },
-                            ]);
-                            console.error(response);
-                            return;
-                        }
-
-                        // Set up the new id
-                        item.id = newID;
-                        dispatch(addNewFoodItem(kitchenMode, item));
-                        props.onClose();
+                        // combined redux/backend
+                        // close box on success only
+                        if (await addItemToKitchenAll(userName, kitchenMode, item, dispatch))
+                            props.onClose();
                     }}
                 />
             </View>

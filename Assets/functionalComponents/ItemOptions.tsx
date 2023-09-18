@@ -8,6 +8,7 @@ import { removeItem as removeItemBackend} from "../../Utils/endpoints";
 import { removeItem as removeItemRedux } from "../../redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownSettings } from "../../config/type";
+import { removeItemAll } from "../../Utils/changeAllCopies";
 
 
 const iconDict = new Map<string, [IconDefinition, string]>([
@@ -35,29 +36,7 @@ export default function ItemOptions(props: ItemOptionsProps) {
     }
 
     async function remove() {
-
-
-        // backend
-        let response: Response;
-        try {
-            response = await removeItemBackend(userName, itemLocation, itemID);
-        } catch (err) {
-            console.error(err);
-            Alert.alert('Failed to delete item', "Please try again later", [
-                { text: 'OK' },
-            ]);
-            return;
-        }
-        if (!response.ok) {
-            console.error(response);
-            Alert.alert('Failed to delete item', "Please try again later", [
-                { text: 'OK' },
-            ]);
-            return;
-        }
-
-        // frontend
-        dispatch(removeItemRedux(itemLocation, itemID));
+        removeItemAll(userName, itemLocation, itemID, dispatch)
     }
 
     function moveTo(location: string) {
@@ -103,8 +82,9 @@ export default function ItemOptions(props: ItemOptionsProps) {
                             icon: icon,
                             iconColor: iconColor,
                             onPress: () => moveTo(loc)
-                        })
-                        ))}
+                        }))
+                    )
+                }
 
                 renderItem={(option) => (
                     <TouchableOpacity onPress={() => { props.onClose(); option.item.onPress() }}>
