@@ -1,11 +1,11 @@
 import { IconDefinition, faBreadSlice, faPen, faSnowflake, faToiletPortable, faTrash } from "@fortawesome/free-solid-svg-icons";
-import {FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {Alert, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import fonts from "../../config/fonts";
 import { removeItem as removeItemBackend} from "../../Utils/endpoints";
 import { removeItem as removeItemRedux } from "../../redux/Actions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownSettings } from "../../config/type";
 
 
@@ -27,6 +27,7 @@ export default function ItemOptions(props: ItemOptionsProps) {
 
     const userName = useSelector((state: any) => state.userName) as string;
     const { itemID, itemLocation } = useSelector((state: any) => state.itemDropdownSettings);
+    const dispatch = useDispatch();
 
     function edit() {
 
@@ -41,16 +42,21 @@ export default function ItemOptions(props: ItemOptionsProps) {
             response = await removeItemBackend(userName, itemLocation, itemID);
         } catch (err) {
             console.error(err);
+            Alert.alert('Failed to delete item', "Please try again later", [
+                { text: 'OK' },
+            ]);
             return;
         }
         if (!response.ok) {
             console.error(response);
+            Alert.alert('Failed to delete item', "Please try again later", [
+                { text: 'OK' },
+            ]);
             return;
         }
 
         // frontend
-        removeItemRedux(itemLocation, itemID);
-        console.log("deleted")
+        dispatch(removeItemRedux(itemLocation, itemID));
     }
 
     function moveTo(location: string) {
