@@ -7,11 +7,11 @@ import fonts from "../../config/fonts";
 import { removeItem as removeItemBackend} from "../../Utils/endpoints";
 import { removeItem as removeItemRedux } from "../../redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownSettings } from "../../config/type";
-import { removeItemAll } from "../../Utils/changeAllCopies";
+import { DropdownSettings, StorageLocation } from "../../config/type";
+import { moveItemAll, removeItemAll } from "../../Utils/changeAllCopies";
 
 
-const iconDict = new Map<string, [IconDefinition, string]>([
+const iconDict = new Map<StorageLocation, [IconDefinition, string]>([
     ["Fridge", [faToiletPortable, colors.fridgy_red]],
     ["Freezer", [faSnowflake, colors.freezer_blue]],
     ["Shelf", [faBreadSlice, colors.toasty_brown]]
@@ -35,12 +35,12 @@ export default function ItemOptions(props: ItemOptionsProps) {
 
     }
 
-    async function remove() {
+    function remove() {
         removeItemAll(userName, itemLocation, itemID, dispatch)
     }
 
-    function moveTo(location: string) {
-        console.log("Move to " + location)
+    function moveTo(newLocation: StorageLocation) {
+        moveItemAll(userName, itemLocation, itemID, newLocation, dispatch);
     }
 
     const x = Array(iconDict.keys());

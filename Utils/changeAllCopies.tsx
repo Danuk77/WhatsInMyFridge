@@ -9,8 +9,13 @@ import { AnyAction } from "@reduxjs/toolkit";
 
 import * as ReduxActions from "../redux/Actions";
 import * as Backend from "./endpoints"
+import backend from "../config/backend";
 
 export async function addItemToKitchenAll(userName: string, kitchenMode:StorageLocation, item:foodItem, dispatch:Dispatch<AnyAction>) {
+
+    if (!backend.enabled) {
+        throw new Error("not implemented - require backend to create id of foodItem.")
+    }
 
     var response;
     var newID: string;
@@ -43,26 +48,55 @@ export async function addItemToKitchenAll(userName: string, kitchenMode:StorageL
 
 export async function removeItemAll(userName: string, itemLocation: StorageLocation, itemID: string, dispatch: Dispatch<AnyAction>) {
 
+    if (backend.enabled) {
 
-    // backend
-    let response: Response;
-    try {
-        response = await Backend.removeItem(userName, itemLocation, itemID);
-    } catch (err) {
-        console.error(err);
-        Alert.alert('Failed to delete item', "Please try again later", [
-            { text: 'OK' },
-        ]);
-        return false;
+        let response: Response;
+        try {
+            response = await Backend.removeItem(userName, itemLocation, itemID);
+        } catch (err) {
+            console.error(err);
+            Alert.alert('Failed to delete item', "Please try again later", [
+                { text: 'OK' },
+            ]);
+            return false;
+        }
+        if (!response.ok) {
+            console.error(response);
+            Alert.alert('Failed to delete item', "Please try again later", [
+                { text: 'OK' },
+            ]);
+            return false;
+        }
     }
-    if (!response.ok) {
-        console.error(response);
-        Alert.alert('Failed to delete item', "Please try again later", [
-            { text: 'OK' },
-        ]);
-        return false;
-    }
+
 
     dispatch(ReduxActions.removeItem(itemLocation, itemID));
+    return true;
+}
+
+export async function moveItemAll(userName: string, storageLocation: StorageLocation, id: string, newLocation: StorageLocation, dispatch: Dispatch<AnyAction>) {
+
+    if (backend.enabled) {
+        let response: Response;
+        try {
+            response = await Backend.moveItem(userName, storageLocation, id, newLocation)
+        } catch (err) {
+            console.error(err);
+            Alert.alert('Failed to move item', "Please try again later", [
+                { text: 'OK' },
+            ]);
+            return false;
+        }
+        if (!response.ok) {
+            console.error(response);
+            Alert.alert('Failed to move item', "Please try again later", [
+                { text: 'OK' },
+            ]);
+            return false;
+        } 
+    }
+
+
+    dispatch(ReduxActions.moveItem(storageLocation, id, newLocation));
     return true;
 }

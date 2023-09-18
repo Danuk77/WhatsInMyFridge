@@ -44,5 +44,17 @@ export async function removeItem(userName: string, storageLocation: StorageLocat
     return response; 
 }
 
+export async function moveItem(userName: string, storageLocation: StorageLocation, id: string, newLocation: StorageLocation) {
+    const response = await fetch(`${backend.url}/userItems/${userName}/${storageLocation}/${id}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"newLocation":newLocation})
+    });
+    return response;
+}
+
 
 // module.exports = {getUserData, addItemToKitchen};

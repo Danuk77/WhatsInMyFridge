@@ -133,3 +133,18 @@ export const removeItem = (/*userName: string,*/ storageLocation: StorageLocatio
         id:id
     }
 })
+/**
+ * Move item from one area of the fridge to another
+ * @param storageLocation Location to move from
+ * @param id Id of foodItem
+ * @param newLocation Location to move to
+ * @returns 
+ */
+export const moveItem = (storageLocation: StorageLocation, id: string, newLocation: StorageLocation) => ({
+    type:"moveItem",
+    payload: {
+        storageLocation: storageLocation,
+        id: id,
+        newLocation: newLocation
+    }
+})

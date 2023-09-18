@@ -147,6 +147,22 @@ export default function reducer(state=initialState, action:any){
                     console.error(`Storage location ${action.payload.storageLocation} not implemented`);
                     return state
             }
+        
+        case "moveItem":
+            
+            const item = state[action.payload.storageLocation as StorageLocation]
+                .find((item) => item.id == action.payload.id);
+            if (item === undefined) {
+                throw new Error(`Item with id ${action.payload.id} not found in ${action.payload.storageLocation}`)
+            }
+            return {
+                ...state,
+                [action.payload.storageLocation]: state[action.payload.storageLocation as StorageLocation]
+                    .filter((x) => x.id != action.payload.id),
+                [action.payload.newLocation]: state[action.payload.newLocation as StorageLocation]
+                    .concat([item])
+            }
+
 
         default:
             return state
