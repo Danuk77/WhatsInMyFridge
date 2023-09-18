@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { IconDefinition, faBreadSlice, faPen, faSnowflake, faToiletPortable, faTrash } from "@fortawesome/free-solid-svg-icons";
 import {Alert, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";

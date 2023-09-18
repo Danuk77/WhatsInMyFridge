@@ -4,9 +4,6 @@ import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  View,
-  Button,
-  Modal
 } from 'react-native';
 
 // Filters
