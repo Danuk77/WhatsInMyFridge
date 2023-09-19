@@ -13,6 +13,7 @@ const initialState = {
     ShoppingList: [],
     showFilters: false,
     showAddItemForm: false,
+    showEditItemForm: false,
     showFruits: true,
     showVegetables: true,
     showMeats: true,
@@ -72,6 +73,12 @@ export default function reducer(state=initialState, action:any){
             return {
                 ...state,
                 showAddItemForm: !state.showAddItemForm
+            }
+        
+        case "setShowEditItemForm":
+            return {
+                ...state,
+                showEditItemForm: action.payload.visible
             }
 
         // Reducer for changing the filters (what type of food is seen)

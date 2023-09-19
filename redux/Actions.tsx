@@ -148,3 +148,15 @@ export const moveItem = (storageLocation: StorageLocation, id: string, newLocati
         newLocation: newLocation
     }
 })
+
+/**
+ * Show or hide the edit item form. When displaying it edits the item referenced in itemDropdownSettings in the redux store.
+ * @param visible Visibility of the edit item form
+ * @returns 
+ */
+export const setShowEditItemForm = (visible: boolean) => ({
+    type:"setShowEditItemForm",
+    payload:{
+        visible:visible
+    }
+})

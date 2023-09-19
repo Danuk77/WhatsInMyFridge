@@ -1,14 +1,13 @@
 /* eslint-disable */
 import { IconDefinition, faBreadSlice, faPen, faSnowflake, faToiletPortable, faTrash } from "@fortawesome/free-solid-svg-icons";
-import {Alert, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import fonts from "../../config/fonts";
-import { removeItem as removeItemBackend} from "../../Utils/endpoints";
-import { removeItem as removeItemRedux } from "../../redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownSettings, StorageLocation } from "../../config/type";
+import { StorageLocation } from "../../config/type";
 import { moveItemAll, removeItemAll } from "../../Utils/changeAllCopies";
+import { setShowEditItemForm } from "../../redux/Actions";
 
 
 const iconDict = new Map<StorageLocation, [IconDefinition, string]>([
@@ -32,7 +31,8 @@ export default function ItemOptions(props: ItemOptionsProps) {
     const dispatch = useDispatch();
 
     function edit() {
-
+        // the form uses the storage and id referenced by the ItemOptions (this) dropdown
+        dispatch(setShowEditItemForm(true))
     }
 
     function remove() {
@@ -42,8 +42,6 @@ export default function ItemOptions(props: ItemOptionsProps) {
     function moveTo(newLocation: StorageLocation) {
         moveItemAll(userName, itemLocation, itemID, newLocation, dispatch);
     }
-
-    const x = Array(iconDict.keys());
 
     return <Modal 
         visible={props.visible}

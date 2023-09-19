@@ -1,12 +1,12 @@
 /* eslint-disable */
 import { DimensionValue } from "react-native";
 export type foodItem = {
-    name:String, 
-    type:String, 
-    expirationDate:String, 
-    startDate:String, 
+    name:string, 
+    type: string, 
+    expirationDate: string, 
+    startDate: string, 
     quantity: number, 
-    expirationType:String,
+    expirationType: string,
     id: string
 }
 

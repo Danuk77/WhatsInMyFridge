@@ -9,7 +9,7 @@ import {
 // Filters
 import FiltersKitchen from './FiltersKitchen';
 
-import { hideItemDropdown, showAddItemForm, showAddItemOptionsList, showFilters } from '../../redux/Actions';
+import { hideItemDropdown, setShowEditItemForm, showAddItemForm, showAddItemOptionsList, showFilters } from '../../redux/Actions';
 
 // Import redux hooks
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +18,7 @@ import KitchenItem from './KitchenItem';
 import { AddItemFormModal } from '../functionalComponents/AddItemFormModal';
 import { NewItemMenu } from '../functionalComponents/NewItemMenu';
 import ItemOptions from '../functionalComponents/ItemOptions';
+import { EditItemFormModal } from '../functionalComponents/EditItemFormModal';
 
 
 function Kitchen(): JSX.Element {
@@ -37,6 +38,12 @@ function Kitchen(): JSX.Element {
       <AddItemFormModal
         onClose={() => dispatch(showAddItemForm())}
         visible={useSelector((state: any) => state.showAddItemForm)}
+      />
+      <EditItemFormModal
+        onClose={() => dispatch(setShowEditItemForm(false))}
+        visible={useSelector((state: any) => state.showEditItemForm)}
+        id={useSelector((state: any) => state.itemDropdownSettings.itemID)}
+        storageLocation={useSelector((state: any) => state.itemDropdownSettings.itemLocation)}
       />
       <ItemOptions
         onClose={() => dispatch(hideItemDropdown())}

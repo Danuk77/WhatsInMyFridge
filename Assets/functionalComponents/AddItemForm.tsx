@@ -70,17 +70,6 @@ const expirationTypeNames = new Map<ExpirationType, string>([
     [ExpirationType.BestBefore, "Best Before"]
 ])
 
-
-
-
-type FormData = {
-    name: string,
-    // quantity: number,
-    expirationType: string,
-    expirationDate: string,
-    dateAdded: string,
-}
-
 const MAX_QUANTITY = 100;
 
 const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: '2-digit', month: '2-digit', day: '2-digit'};
@@ -89,16 +78,21 @@ const userLocale = getUserLocale();
 
 type AddItemFormProps = { 
     onSubmit: (arg0: foodItem) => void; 
-    style: ViewStyle | undefined;
+    style?: ViewStyle;
+    defaults?: Partial<foodItem>
 
 }
 
 export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
 
     // hooks.
-    const [category, setCategory] = useState<FoodCategory>(FoodCategory.Fruit);
-    const [name, setName]= useState<string>();
-    const [quantity, setQuantity] = useState<string>("1");
+    const [category, setCategory] = useState<FoodCategory>(
+        // reverse lookup in a map. bit horrible. sorry
+        Array.from(foodCategoryNames.entries()).find(([_, name]) => name == props.defaults?.type)?.[0]
+        ?? FoodCategory.Fruit
+    );
+    const [name, setName]= useState<string>(props.defaults?.name ?? "");
+    const [quantity, setQuantity] = useState<string>(props.defaults?.quantity?.toString() ?? "");
     function handleQuantityChange(newQuantity: string) : void {
         // remove non digit chars
         var clean = newQuantity.replace(/[^0-9]/g, '');
@@ -108,14 +102,23 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
         }
         setQuantity(clean);
     }
-    const [expirationType, setExpirationType] = useState<ExpirationType>(ExpirationType.UseBy);
+    const [expirationType, setExpirationType] = useState<ExpirationType>(
+        Array.from(expirationTypeNames.entries()).find(([_, name]) => name == props.defaults?.expirationType)?.[0]
+        ?? ExpirationType.UseBy
+    );
     const [expirationTypeOpen, setExpirationTypeOpen] = useState<boolean>(false);
-    const [expirationDate, setExpirationDate] = useState<Date | undefined>(undefined)
-    const [dateAdded, setDateAdded] = useState<Date>(new Date(Date.now()))
+    const [expirationDate, setExpirationDate] = useState<Date | undefined>(
+        props.defaults?.expirationDate === undefined 
+        ? undefined
+        : new Date(props.defaults.expirationDate))
+    const [dateAdded, setDateAdded] = useState<Date | undefined>(
+        props.defaults?.startDate === undefined
+        ? undefined
+        : new Date(props.defaults.startDate))
 
     // keep track of whether the text in the date entry boxes are valid
-    const [expirationDateValid, setExpirationDateValid] = useState<boolean>(false);
-    const [dateAddedValid, setDateAddedValid] = useState<boolean>(true);
+    const [expirationDateValid, setExpirationDateValid] = useState<boolean>(expirationDate !== undefined);
+    const [dateAddedValid, setDateAddedValid] = useState<boolean>(dateAdded !== undefined);
 
     const [titleErr, setTitleErr] = useState<string | undefined>(undefined);
     const [quantityErr, setQuantityErr] = useState<string | undefined>(undefined);
@@ -211,6 +214,7 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                             style={[styles.inputBox, { flex: 3, marginRight: 5 }]}
                             onChangeText={setName}
                             placeholder='Title'
+                            defaultValue={name}
                         />
                         <TextInput
                             style={[styles.inputBox, { flex: 1 }]}
@@ -284,6 +288,15 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
             
         </View>
     );
+}
+
+AddItemForm.defaultProps = {
+    defaults: {
+        quantity: 1,
+        expirationType: "Use By",
+        type:"Fruit",
+        startDate: moment(Date.now()).format("YYYY-MM-DD"),
+    } as Partial<foodItem>
 }
 
 const styles = StyleSheet.create({
