@@ -37,14 +37,9 @@ export function EditItemFormModal(props: EditItemFormModalProps): React.JSX.Elem
     // find the item to edit
     const toEdit = useSelector((state: any) => (state[props.storageLocation] as foodItem[])?.find(({ id, ..._}) => id == props.id));
 
-    if (props.id === undefined || props.storageLocation == undefined)
+    if (props.id === undefined || props.storageLocation == undefined || !toEdit)
         return <></>
 
-    if (!toEdit) {
-        Alert.alert("An Error occurred");
-        console.error("EditItemFormModal couldn't find the item to edit");
-        return <></>
-    }
 
     return <>
         {/* fade in modal */}

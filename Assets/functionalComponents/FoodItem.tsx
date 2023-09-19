@@ -21,9 +21,10 @@ import { faPen, faEllipsisVertical, faAngleUp, faTrash, faTractor } from '@forta
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
 import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showItemDropdown } from '../../redux/Actions';
 import { DropdownSettings, StorageLocation } from '../../config/type';
+import { removeItemAll } from '../../Utils/changeAllCopies';
 
 type foodItemProps = {
   name: String;
@@ -39,6 +40,8 @@ type foodItemProps = {
 
 export function FoodItem(props : foodItemProps): React.JSX.Element {
   const dispatch = useDispatch();
+  const userName = useSelector((state: any) => state.userName);
+
 
   // Sliding gesture
   const pan = useRef(new Animated.ValueXY()).current
@@ -221,7 +224,9 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
         </Animated.View>
 
         <Animated.View style={[styles.gestureOption, {left:'5%'}, {opacity:pan.x.interpolate({inputRange:[0, 100], outputRange:[0,1], extrapolate:'clamp'})}]}>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => removeItemAll(userName, props.location as StorageLocation, props.id, dispatch)}
+          >
               <FontAwesomeIcon icon={faTrash} size={25} color='red'/>
           </TouchableOpacity>
         </Animated.View>
