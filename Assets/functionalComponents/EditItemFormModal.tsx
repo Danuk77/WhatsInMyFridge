@@ -35,7 +35,7 @@ export function EditItemFormModal(props: EditItemFormModalProps): React.JSX.Elem
     const dispatch = useDispatch();
 
     // find the item to edit
-    const toEdit = useSelector((state: any) => (state[props.storageLocation] as foodItem[])?.find(({ id, ..._}) => id == props.id));
+    const toEdit = useSelector((state: any) => (state[props.storageLocation] as foodItem[])?.find(({ id, ..._}) => id === props.id));
 
     if (props.id === undefined || props.storageLocation == undefined || !toEdit)
         return <></>
