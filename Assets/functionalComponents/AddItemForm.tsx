@@ -34,13 +34,6 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { DateSelectorBox } from './DateSelectorBox';
 import { foodItem } from '../../config/type';
 
-// import  from 'react-moment';
-
-// type foodItemProps = {
-//     name: String;
-//     type: String;
-//     expirationDate: Date;
-// }
 
 enum FoodCategory {
     Fruit = 0,

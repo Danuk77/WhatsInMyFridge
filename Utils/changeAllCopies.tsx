@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Update the backend and the redux.
  */

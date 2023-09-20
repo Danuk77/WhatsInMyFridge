@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Falsy, RecursiveArray, RegisteredStyle, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";
 import { useState } from "react";
