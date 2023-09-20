@@ -1,0 +1,4 @@
+<!-- copied from https://medium.com/nerd-for-tech/react-native-local-push-notifications-4dcca5a14fd4 -->
+<resources>
+    <color name="white">#FFF</color>
+</resources>
