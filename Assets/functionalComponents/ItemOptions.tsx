@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { IconDefinition, faBreadSlice, faPen, faSnowflake, faToiletPortable, faTrash } from "@fortawesome/free-solid-svg-icons";
-import {FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {Alert, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import fonts from "../../config/fonts";
@@ -17,7 +17,7 @@ const iconDict = new Map<StorageLocation, [IconDefinition, string]>([
 ]);
 
 type ItemOptionsProps = {
-    storageLocation?: string;
+    storageLocation?: StorageLocation;
     visible: boolean;
     onClose: () => void;
     style?: ViewStyle;
@@ -27,20 +27,29 @@ type ItemOptionsProps = {
 export default function ItemOptions(props: ItemOptionsProps) {
 
     const userName = useSelector((state: any) => state.userName) as string;
-    const { itemID, itemLocation } = useSelector((state: any) => state.itemDropdownSettings);
     const dispatch = useDispatch();
 
+
     function edit() {
-        // the form uses the storage and id referenced by the ItemOptions (this) dropdown
+        // the form uses the storage and id referenced by the itemDropdownSettings in the redux
+        // ...which get set whenever this dropdown is opened
         dispatch(setShowEditItemForm(true))
     }
 
     function remove() {
-        removeItemAll(userName, itemLocation, itemID, dispatch)
+        if (!props.storageLocation || !props.id) {
+            Alert.alert("An error occurred");
+            return;
+        }
+        removeItemAll(userName, props.storageLocation, props.id, dispatch)
     }
 
     function moveTo(newLocation: StorageLocation) {
-        moveItemAll(userName, itemLocation, itemID, newLocation, dispatch);
+        if (!props.storageLocation || !props.id) {
+            Alert.alert("An error occurred");
+            return;
+        }
+        moveItemAll(userName, props.storageLocation, props.id, newLocation, dispatch);
     }
 
     return <Modal 
