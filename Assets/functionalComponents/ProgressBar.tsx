@@ -42,9 +42,7 @@ export function ProgressBar(props:progressBarProps): JSX.Element {
         }
     }
 
-    // TODO
-    // Define the function when integrating with database
-    // The function is like the constructor for the progress bar
+    // Set up the correct colour for the progress bar
     const setUpBar = useEffect(() => {
         // Set the colour of the progress bar
         setColor(getColor(props.progress));
