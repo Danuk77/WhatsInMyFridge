@@ -90,8 +90,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     };
 
     const dims = Dimensions.get("window");
-    console.log(dims);
-    console.log(event.nativeEvent.pageX, event.nativeEvent.pageY)
+
     if (event.nativeEvent.pageX < dims.width/2) {
       coords.left = event.nativeEvent.pageX;
     } else {

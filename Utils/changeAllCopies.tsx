@@ -102,3 +102,40 @@ export async function moveItemAll(userName: string, storageLocation: StorageLoca
     dispatch(ReduxActions.moveItem(storageLocation, id, newLocation));
     return true;
 }
+
+/**
+ * Function called when the user has edited a foodItem and has clicked on save
+ * Notifies the backend with the changes and checks if the update is successful
+ * If successful updates the state of the application with the relevant changes
+ * Otherwise, throws an error
+ * @param userName Name of the user
+ * @param storageLocation Location of the food item edited
+ * @param newValues Object containing the new values of the edited food item
+ * @param dispatch reference to redux dispatch
+ * @returns 
+ */
+export async function editFoodItem(userName: string, storageLocation: StorageLocation, newValues:foodItem, dispatch: Dispatch<AnyAction>){
+    
+    if(backend.enabled){
+        let response:Response;
+        try{
+            // Make the call to the backend
+            response = await Backend.editItem(userName, storageLocation, newValues);
+        }catch(err){
+            console.log(err);
+            Alert.alert('Failed to edit item');
+            return false;
+        }
+
+        // Check if the backend has responded successfully
+        if(!response.ok){
+            console.error(response);
+            Alert.alert('Failed to edit item');
+            return false;
+        }
+        
+        // If the backend responded successfully, we can edit the state of the application with the changes the user has made
+        dispatch(ReduxActions.editFoodItem(newValues.id, storageLocation, newValues));
+        return true;
+    }
+}
