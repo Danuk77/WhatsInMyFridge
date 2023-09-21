@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -39,6 +39,10 @@ type foodItemProps = {
 export function FoodItem(props : foodItemProps): React.JSX.Element {
   const dispatch = useDispatch();
   const userName = useSelector((state: any) => state.userName);
+
+  const [progress, setProgress] = useState<number>(0);
+  const [daysLeft, setDaysLeft] = useState<number>(0);
+  const [expired, setExpired] = useState<boolean>(false);
 
 
   // Sliding gesture
@@ -102,8 +106,6 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
       coords.bottom = dims.height - event.nativeEvent.pageY;
     }
 
-    console.log(coords);
-
     dispatch(showItemDropdown(props.id, props.location as StorageLocation, coords))
   };
 
@@ -144,8 +146,20 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     }
   }
 
-  // Calculate the state of the food item
-  const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
+  useEffect(() =>{
+    const calculate = () => {
+      const { progress, daysLeft, expired } = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
+
+      // Update the state variables
+      setProgress(progress);
+      setDaysLeft(daysLeft);
+      setExpired(expired);
+    };
+
+    calculate();
+  },[props.startDate, props.expirationDate]);
+  // // Calculate the state of the food item
+  // const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
   
   return (
       <View style={{flexDirection:'row'}}>
