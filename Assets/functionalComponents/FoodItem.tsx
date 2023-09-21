@@ -10,20 +10,18 @@ import {
   GestureResponderEvent,
   Dimensions,
   DimensionValue,
-  Vibration,
   Animated,
   PanResponder
 
 } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen, faEllipsisVertical, faAngleUp, faTrash, faTractor } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faTrash, faTractor } from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
-import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 import { useDispatch, useSelector } from 'react-redux';
 import { showItemDropdown } from '../../redux/Actions';
-import { DropdownSettings, StorageLocation } from '../../config/type';
+import { StorageLocation } from '../../config/type';
 import { removeItemAll } from '../../Utils/changeAllCopies';
 
 type foodItemProps = {
@@ -46,7 +44,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
   // Sliding gesture
   const pan = useRef(new Animated.ValueXY()).current
 
-
+  // Handling the sliding gestures to the left and the right
   const panResponder = useRef(
       PanResponder.create({
           onMoveShouldSetPanResponder: (evt, gesturestate) => {
