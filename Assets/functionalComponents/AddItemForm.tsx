@@ -1,37 +1,23 @@
 /* eslint-disable */
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     Image,
-    Dimensions,
     TouchableOpacity,
-    ProgressBarAndroidComponent,
     TextInput,
-    Modal,
-    Button,
     ViewStyle,
     Keyboard,
-    DeviceEventEmitter,
 
 } from 'react-native';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen, faCalendar} from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
-import { ProgressBar } from './ProgressBar';
 import fonts from '../../config/fonts';
-import {useForm} from "react-hook-form"
-import DatePicker from 'react-native-date-picker'
 import DropDownPicker from 'react-native-dropdown-picker';
-// import moment from "moment";
-import {DateTime} from "luxon";
 import { getUserLocale } from 'get-user-locale';
-import { parse, setDate } from 'date-fns';
 import moment from "moment";
-import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { DateSelectorBox, DateSelectorBoxRef } from './DateSelectorBox';
 import { foodItem } from '../../config/type';
 
@@ -65,10 +51,6 @@ const expirationTypeNames = new Map<ExpirationType, string>([
 ])
 
 const MAX_QUANTITY = 100;
-
-const DATE_OPTIONS: Intl.DateTimeFormatOptions = {year: '2-digit', month: '2-digit', day: '2-digit'};
-
-const userLocale = getUserLocale();
 
 type AddItemFormProps = { 
     onSubmit: (arg0: foodItem) => void; 
@@ -114,10 +96,6 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
         props.defaults?.startDate === undefined
         ? undefined
         : new Date(props.defaults.startDate))
-
-    // keep track of whether the text in the date entry boxes are valid
-    const [expirationDateValid, setExpirationDateValid] = useState<boolean>(expirationDate !== undefined);
-    const [dateAddedValid, setDateAddedValid] = useState<boolean>(dateAdded !== undefined);
 
     const [titleErr, setTitleErr] = useState<string | undefined>(undefined);
     const [quantityErr, setQuantityErr] = useState<string | undefined>(undefined);
@@ -256,9 +234,9 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                         <DateSelectorBox
                             style={[styles.inputBox, { flex: 3 }]}
                             iconStyle={styles.icon}
-                            onDateChange={(date) => {setExpirationDate(date); setExpirationDateValid(true)}}
+                            onDateChange={(date) => {setExpirationDate(date);}}
                             date={expirationDate}
-                            onInvalidEntry={() => setExpirationDateValid(false)}
+                            onInvalidEntry={() => {}}
                             ref={dateBox0}
                         />
 
@@ -276,9 +254,9 @@ export function AddItemForm(props: AddItemFormProps): React.JSX.Element {
                     <DateSelectorBox
                         style={styles.inputBox}
                         iconStyle={styles.icon}
-                        onDateChange={(date) => {setDateAdded(date); setDateAddedValid(true);}}
+                        onDateChange={(date) => {setDateAdded(date);}}
                         date={dateAdded}
-                        onInvalidEntry={() => setDateAddedValid(false)}
+                        onInvalidEntry={() => {}}
                         ref={dateBox1}
                     />
 
