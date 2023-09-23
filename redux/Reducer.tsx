@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-import { DimensionValue } from "react-native"
-import { createStoreHook } from "react-redux"
 import { DropdownSettings as ItemDropdownSettings, StorageLocation, foodItem } from "../config/type"
 
 const initialState = {
@@ -169,7 +167,16 @@ export default function reducer(state=initialState, action:any){
                 [action.payload.newLocation]: state[action.payload.newLocation as StorageLocation]
                     .concat([item])
             }
-
+        
+        case "foodItemEdit":
+            return{
+                ...state,
+                // Replace the existing object with the new foodItem object
+                [action.payload.storageLocation] : state[action.payload.storageLocation as StorageLocation]
+                    .map((item) => {
+                        return item.id === action.payload.id ? action.payload.values as foodItem : item
+                    })
+            }
 
         default:
             return state

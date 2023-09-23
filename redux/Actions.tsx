@@ -160,3 +160,21 @@ export const setShowEditItemForm = (visible: boolean) => ({
         visible:visible
     }
 })
+
+/**
+ * Action called when the user has edited information about a food item and has clicked the save button on the modal
+ * @param id ID of the food item that has been edited
+ * @param newValues The object containing all the information about the food item after it has been edited
+ * @param storageLocation The storage location of the object at the moment it was edited
+ * @returns 
+ */
+export const editFoodItem = (id:string, storageLocation:StorageLocation, newValues:foodItem) => (
+    {
+        type:"foodItemEdit",
+        payload:{
+            id:id,
+            storageLocation: storageLocation,
+            values:newValues
+        }
+    }
+)

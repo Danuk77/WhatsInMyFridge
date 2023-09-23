@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,20 +10,18 @@ import {
   GestureResponderEvent,
   Dimensions,
   DimensionValue,
-  Vibration,
   Animated,
   PanResponder
 
 } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen, faEllipsisVertical, faAngleUp, faTrash, faTractor } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faTrash, faTractor } from '@fortawesome/free-solid-svg-icons';
 import colors from "../../config/colors"
 import { ProgressBar } from './ProgressBar';
-import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 import { useDispatch, useSelector } from 'react-redux';
 import { showItemDropdown } from '../../redux/Actions';
-import { DropdownSettings, StorageLocation } from '../../config/type';
+import { StorageLocation } from '../../config/type';
 import { removeItemAll } from '../../Utils/changeAllCopies';
 
 type foodItemProps = {
@@ -42,11 +40,15 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
   const dispatch = useDispatch();
   const userName = useSelector((state: any) => state.userName);
 
+  const [progress, setProgress] = useState<number>(0);
+  const [daysLeft, setDaysLeft] = useState<number>(0);
+  const [expired, setExpired] = useState<boolean>(false);
+
 
   // Sliding gesture
   const pan = useRef(new Animated.ValueXY()).current
 
-
+  // Handling the sliding gestures to the left and the right
   const panResponder = useRef(
       PanResponder.create({
           onMoveShouldSetPanResponder: (evt, gesturestate) => {
@@ -92,8 +94,7 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     };
 
     const dims = Dimensions.get("window");
-    console.log(dims);
-    console.log(event.nativeEvent.pageX, event.nativeEvent.pageY)
+
     if (event.nativeEvent.pageX < dims.width/2) {
       coords.left = event.nativeEvent.pageX;
     } else {
@@ -104,8 +105,6 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     } else {
       coords.bottom = dims.height - event.nativeEvent.pageY;
     }
-
-    console.log(coords);
 
     dispatch(showItemDropdown(props.id, props.location as StorageLocation, coords))
   };
@@ -147,8 +146,20 @@ export function FoodItem(props : foodItemProps): React.JSX.Element {
     }
   }
 
-  // Calculate the state of the food item
-  const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
+  useEffect(() =>{
+    const calculate = () => {
+      const { progress, daysLeft, expired } = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
+
+      // Update the state variables
+      setProgress(progress);
+      setDaysLeft(daysLeft);
+      setExpired(expired);
+    };
+
+    calculate();
+  },[props.startDate, props.expirationDate]);
+  // // Calculate the state of the food item
+  // const {progress, daysLeft, expired} = calculateProgress(props.startDate.getTime(), props.expirationDate.getTime());
   
   return (
       <View style={{flexDirection:'row'}}>

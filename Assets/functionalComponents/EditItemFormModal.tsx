@@ -1,16 +1,13 @@
 /* eslint-disable */
-import React, { useCallback, useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AddItemForm } from './AddItemForm';
-import { addItemToKitchen, getUserData } from '../../Utils/endpoints';
+import React from 'react';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewFoodItem } from '../../redux/Actions';
 import colors from '../../config/colors';
 import fonts from '../../config/fonts';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faToiletPortable, faSnowflake, faBreadSlice, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { addItemToKitchenAll } from '../../Utils/changeAllCopies';
 import { StorageLocation, foodItem } from '../../config/type';
+import { ChangeItemFields } from './ChangeItemFields';
+import { editFoodItem } from '../../Utils/changeAllCopies';
 
 type EditItemFormModalProps = {
     visible: boolean | undefined;
@@ -68,17 +65,15 @@ export function EditItemFormModal(props: EditItemFormModalProps): React.JSX.Elem
                 onPressOut={props.onClose}
             />
             <View style={styles.boxView}>
-                <AddItemForm
-                    style={styles.box}
-                    onSubmit={async (item) => {
-                        // copy the old id
-                        item.id = toEdit.id;
+                <ChangeItemFields 
+                    onSubmit={(newValues:foodItem) => {                      
+                        // Update the state and the backend with this information
+                        editFoodItem(userName, kitchenMode, newValues, dispatch);
 
-
-                        console.log("edit item: ", item)
+                        // Close the form
                         props.onClose();
-                    }}
-                    defaults={toEdit}
+                    }} 
+                    item={toEdit}
                 />
             </View>
         </Modal>

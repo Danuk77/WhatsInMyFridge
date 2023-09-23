@@ -1,11 +1,12 @@
 /* eslint-disable */
 
 import { faWifi } from '@fortawesome/free-solid-svg-icons';
-import React, {useCallback, useState, useEffect} from 'react';
+import { useRoute } from '@react-navigation/native';
+import React, {useCallback, useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   View,
-
+  Animated
 } from 'react-native';
 
 
@@ -19,13 +20,8 @@ export function ProgressBar(props:progressBarProps): JSX.Element {
     const [width, setWidth] = useState<number>(props.progress);
     const [color, setColor] = useState<string>('#52FF00');
 
-    const increaseWidth = useCallback(() => {
-        const newWidth = width + 10;
-        setWidth(newWidth%100);
-
-        // Initialise the color of the bar
-        setColor(getColor(width));
-    }, [width]);
+    // Used for setting up the animation for the progress bar to go from 0 to the width value
+    const animatedWidth = useRef(new Animated.Value(0)).current;
 
     /**
      * Function for returning the colour to show in the completed section of the progress bar
@@ -43,16 +39,28 @@ export function ProgressBar(props:progressBarProps): JSX.Element {
     }
 
     // Set up the correct colour for the progress bar
-    const setUpBar = useEffect(() => {
+    useEffect(() => {
+        // Set up the progress bar
+        setWidth(props.progress);
         // Set the colour of the progress bar
         setColor(getColor(props.progress));
-    },[]);
+
+        Animated.timing(animatedWidth, {
+            toValue: props.progress, // Update the animated with ref to the new progress value
+            duration: 1000, 
+            useNativeDriver: false, // Run on the native thread
+        }).start();
+    },[props.progress]);
 
     return (
     <View style={styles.parent}>
-        <View style={[{width: `${width}%`, 
+        <Animated.View style={[{width: animatedWidth.interpolate(
+                                {
+                                    inputRange: [0, 100],
+                                    outputRange: ['0%', `100%`],
+                                }), 
                     backgroundColor:color,
-                    borderRadius:20}]}></View>
+                    borderRadius:20}]}/>
     </View>
     );
 }
