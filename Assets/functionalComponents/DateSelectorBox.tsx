@@ -2,7 +2,7 @@
 
 import { Falsy, RecursiveArray, RegisteredStyle, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from "react-native";
 import colors from "../../config/colors";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import getUserLocale from "get-user-locale";
 import moment from "moment";
 import fonts from "../../config/fonts";
@@ -10,12 +10,17 @@ import { FontAwesomeIcon, FontAwesomeIconStyle } from "@fortawesome/react-native
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { CalendarModal } from "./CalendarModal";
 
-type DateSelectorBoxProps = {
+interface DateSelectorBoxProps {
     style: ViewStyle | ViewStyle[];
     iconStyle: FontAwesomeIconStyle;
     date: Date | undefined;
     onDateChange: (arg0: Date) => void; 
     onInvalidEntry: () => void;
+}
+
+// expose this function outside the component so that we can parse the text in the box on command.
+export interface DateSelectorBoxRef {
+    handleTextDefocus: () => Date | null
 }
 
 function formatDate(date: Date, locale: string) {
@@ -24,7 +29,7 @@ function formatDate(date: Date, locale: string) {
     return m.format("L");
 }
 
-export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element {
+export const DateSelectorBox = forwardRef<DateSelectorBoxRef, DateSelectorBoxProps>((props, ref) => {
 
     const userLocale = getUserLocale();
     // set default value of datestring depending on if the date is defined.
@@ -42,19 +47,27 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
     const now = moment(Date.now());
     now.locale(userLocale)
 
-    function handleTextDefocus() {
+    function handleTextDefocus() : Date | null {
         // when user clicks away from the box
         // format the date and call onDateChange prop
         const m = moment(dateString, "L", userLocale);
         if (!m.isValid()) {
             console.log("The date is invalid!")
             props.onInvalidEntry()
-            return;
+            return null;
         }
         console.log(m)
-        props.onDateChange(m.toDate())
+        const newDate = m.toDate()
+        props.onDateChange(newDate)
         setDateString(m.format("L"));
+        return newDate;
     }
+
+    // expose handleTextDefocus to the parent
+    // sometimes we need to call this because the box doesn't defocus and consequently the date doesn't get parsed
+    useImperativeHandle(ref, () => ({
+        handleTextDefocus,
+    }));
 
     return <View style={[styles.inputBox, props.style]}>
         <TextInput
@@ -86,7 +99,8 @@ export function DateSelectorBox(props: DateSelectorBoxProps): React.JSX.Element 
     </View>
 
 
-}
+});
+
 
 const styles = StyleSheet.create({
     text: { 
